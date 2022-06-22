@@ -8,7 +8,8 @@ ul{
 ol{
     margin-left: 20px;
 }
-
+a{text-decoration: none;
+color:inherit;}
 body{
     display:flex;
     align-items: center;
@@ -58,4 +59,34 @@ body{
     border:1px solid white;
     width:18px;
     height: 18px;
+}
+.news{
+    position: relative;
+    padding-left: 15px;
+}
+.news__row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: flex-start;
+}
+.news:before{
+    width: 15px;
+    height: 15px;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 0;
+    content: '';
+    display: flex;
+    background-image: url(../images/arrow.gif);
+
+}
+.main-text__title{
+    color:#000000;
+    font-size: 11pt;
+}
+    .main-text__subtitle{
+    color:#828282;
+    font-size: 9pt;
 }
