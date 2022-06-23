@@ -1,120 +1,124 @@
-* {
-  margin: 0;
-  padding: 0;
+*{
+    margin:0;
+    padding: 0;
 }
-ul {
-  list-style: none;
+ul{
+    list-style: none;
 }
-ol {
-  margin-left: 20px;
+ol{
+    margin-left: 20px;
 }
-a {
-  text-decoration: none;
-  color: inherit;
-}
-body {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-}
-
-.container {
-  width: 85%;
-  min-width: 796px;
-  height: 100vh;
-  background: #f6f6f6;
-  display: flex;
-  flex-direction: column;
-  margin: 8px;
-}
-
-@media only screen and (min-width: 300px) and (max-width: 750px) {
-  .container {
+a{text-decoration: none;
+color:inherit;}
+body{
+    display:flex;
+    align-items: center;
+    flex-direction: column;
     width: 100%;
-    min-width: none;
-  }
 }
 
-.container__header {
-  padding: 2px;
-  background-color: #ff6600;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+.container{
+    width:85%;
+    min-width: 796px;
+    height:100vh;
+    background:#f6f6f6;
+    display:flex;
+    flex-direction: column;
+    margin: 8px;
 }
 
-.logo {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: auto;
-}
-.logo__title {
-  color: #222222;
-  line-height: 12px;
-  font-weight: bold;
-  padding-left: 2px;
-  font-size: 10pt;
-  font-family: Verdana, Geneva, sans-serif;
-}
-.logo__image {
-  border: 1px solid white;
-  width: 18px;
-  height: 18px;
+@media only screen and (min-width: 300px) and (max-width:750px){
+    .container{
+        width:100%;
+        min-width: none;
+    }
 }
 
-.menu__item {
-  color: black;
-  font-family: Verdana, Geneva, sans-serif;
-  font-size: 10pt;
+.container__header{
+    padding:2px;
+    background-color: #ff6600;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.logo{
+    display:flex;
+    flex-direction: row;
+    align-items:center; 
+    width: auto;
+}
+.logo__title{
+        color:#222222;
+    line-height: 12px;
+    font-weight: bold;
+    padding-left: 2px;
+    font-size: 10pt;
+    font-family: Verdana, Geneva, sans-serif;
+
+}
+.logo__image{
+    border:1px solid white;
+    width:18px;
+    height: 18px;
+}
+
+.menu__item{
+     color:black;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 10pt;
+   
 }
 
 .news-list {
-  // syili spisku
+    // syili spisku
 }
 .news-list__item {
-  // paddingi margini dlya blocka news
+    // paddingi margini dlya blocka news
 }
-.news {
-  position: relative;
-  // padding-left: 15px;
-  // fomatuvannya drugoryadnogotextu
-  display: flex;
+.news{
+    position: relative;
+   // padding-left: 15px;
+    // fomatuvannya drugoryadnogotextu
+    display: flex;
+
+
 }
 ._title {
-  // formatuvatnnya titlu
+    // formatuvatnnya titlu
 }
 
-.news__row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  align-content: flex-start;
+
+.news__row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: flex-start;
 }
-.news:before {
-  width: 15px;
-  height: 15px;
-  background-repeat: no-repeat;
-  position: absolute;
-  left: 0;
-  content: '';
-  display: flex;
-  background-image: url(../images/arrow.gif);
+.news:before{
+    width: 15px;
+    height: 15px;
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 0;
+    content: '';
+    display: flex;
+    background-image: url(../images/arrow.gif);
+
 }
-.main-text__title {
-  color: #000000;
-  font-size: 10pt;
-  font-family: Verdana, Geneva, sans-serif;
-  font-weight: normal;
+.main-text__title{
+    color:#000000;
+    font-size: 10pt;
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: normal;
 }
-.main-text__subtitle {
-  color: #828282;
-  font-size: 8pt;
-  font-family: Verdana, Geneva, sans-serif;
+    .main-text__subtitle{
+    color:#828282;
+    font-size: 8pt;
+    font-family: Verdana, Geneva, sans-serif;
+    
 }
-.main-text__subtitle span {
-  padding: 0 2px;
+.main-text__subtitle span{padding: 0 2px;
 }

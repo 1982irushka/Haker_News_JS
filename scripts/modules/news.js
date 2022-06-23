@@ -1,1 +1,2 @@
-export function News() {}
+export function News(){
+}     
