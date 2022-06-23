@@ -13,28 +13,25 @@
   <header class="container__header">
     <div class="logo">
       <div class="logo__image"><img src="images/logo.gif"></div>
-      <h2 class="logo__title">Hacker News</h2>
+      <h2  class="logo__title">Hacker News</h2>
     </div>
     <nav>
       <ul class="menu">
-        <li class="menu__item"></li>
+        <li id="user" class="menu__item"><a href="" class="">User info</a></li>
       </ul>
     </nav>
   </header>
   <div class="container__body">
-    <ol type="1">
-      <li>
-        <section class="news main-text">
-          <div class="news__row">
-          <h1 id="newsTitle" class="main-text__title"></h1> 
-          <span class="main-text__subtitle"></span>
+    <ol id="list" type="1" class="news-list">
+      <li class="news-list__  item">
+        <section id="news" class="news">
+          <div class="title">
+            <h2 id="newsTitle" class="ttle__content"></h2> 
+            <span id="url"></span>
           </div>
-          <div class="news__row">
-            <span class="main-text__subtitle" id="points"></span> | 
-            <span class="main-text__subtitle" id="name"></span> | 
-            <span class="main-text__subtitle" id="time"></span> | 
-            <a class="main-text__subtitle" id="commentsCount"></a>
-          </d>
+          <p id="details">
+            11 points by Stratoscope 4 hours ago | hide | past |<a id="commentsCount">1 comment</a>
+          </p> 
         </section>
       </li>
     </ol>

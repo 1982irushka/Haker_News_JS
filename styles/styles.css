@@ -40,6 +40,7 @@ body{
     margin-bottom: 10px;
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .logo{
@@ -49,21 +50,46 @@ body{
     width: auto;
 }
 .logo__title{
-    font-size: 12pt;
-    color:#222222;
+        color:#222222;
     line-height: 12px;
     font-weight: bold;
     padding-left: 2px;
+    font-size: 10pt;
+    font-family: Verdana, Geneva, sans-serif;
+
 }
 .logo__image{
     border:1px solid white;
     width:18px;
     height: 18px;
 }
+
+.menu__item{
+     color:black;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 10pt;
+   
+}
+
+.news-list {
+    // syili spisku
+}
+.news-list__item {
+    // paddingi margini dlya blocka news
+}
 .news{
     position: relative;
-    padding-left: 15px;
+   // padding-left: 15px;
+    // fomatuvannya drugoryadnogotextu
+    display: flex;
+
+
 }
+._title {
+    // formatuvatnnya titlu
+}
+
+
 .news__row{
     display: flex;
     flex-direction: row;
@@ -84,9 +110,15 @@ body{
 }
 .main-text__title{
     color:#000000;
-    font-size: 11pt;
+    font-size: 10pt;
+    font-family: Verdana, Geneva, sans-serif;
+    font-weight: normal;
 }
     .main-text__subtitle{
     color:#828282;
-    font-size: 9pt;
+    font-size: 8pt;
+    font-family: Verdana, Geneva, sans-serif;
+    
+}
+.main-text__subtitle span{padding: 0 2px;
 }
