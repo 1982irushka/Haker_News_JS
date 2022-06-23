@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "haker_news_js",
   "version": "1.0.0",
   "description": "",
@@ -6,10 +7,11 @@
   "scripts": {
     "stylelint": "stylelint '**/*.{less,css}'",
     "lint": "eslint --cache --cache-location node_modules/.cache/eslint",
-    "prettier": "prettier '**/*.{svg,js,html,css,json}' --write --cache node_modules/.cache/prettier",
+    "prettier": "prettier \"**/*.{svg,js,html,css,json}\" --write --cache node_modules/.cache/prettier",
     "exec": "node index.js",
     "server": "http-server",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
   },
   "repository": {
     "type": "git",

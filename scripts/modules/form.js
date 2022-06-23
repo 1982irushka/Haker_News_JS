@@ -1,3 +1,3 @@
-export function formUser(){
-    console.log('f');
+export function formUser() {
+  console.log('f');
 }
