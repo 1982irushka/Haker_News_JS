@@ -1,7 +1,9 @@
-import {formUser} from './modules/form.js';
+import { formUser } from './modules/form.js';
 // import {News} from './modules/news';
 
-for ykir generil li
+console.lo('wwww ');
+
+/* for ykir generil li
 i dlya kojnogo li yogo innerHtml = news
 formUser();
 // News();
@@ -19,10 +21,9 @@ formUser();
     const metaInfo ='....';
 
     cost news = <article><header><h2>title</h2><p>metaInfo</p></header></article>
-5 фетч в масив .і передати його в промісол. поверне масиви
+5 фетч в масив .і передати його в промісол. поверне масиви */
 
-
- /* const detailEl = document.createElement('p');
+/* const detailEl = document.createElement('p');
     detailEl.setAttribute('id', 'details');
     detailEl.classList = "news__row main-text__subtitle"
     const newsEl = document.getElementById('news');
@@ -54,9 +55,9 @@ formUser();
     const commentsEl = document.createElement('span');
     commentsEl.setAttribute('id', 'commentsCount');
     box.appendChild(commentsEl);
-    document.getElementById('commentsCount').innerText = data.descendants;
+    document.getElementById('commentsCount').innerText = data.descendants;  
 
   */
-    }
+/*     }
 )
- 
+  */
