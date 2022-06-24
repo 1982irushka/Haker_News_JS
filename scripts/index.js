@@ -32,10 +32,10 @@ promiseYakiyBereIds
       } = obj;
 
       return `${acc}
-      <li class="news-list__ item">
+      <li class="news-list__item">
         <article class="news">
           <div class="title">
-            <h2 class="ttle__content">${titleNews}</h2>
+            <h2 class="title__content">${titleNews}</h2>
             <a>${url}</a>
           </div>
           <p id="details">
