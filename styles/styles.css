@@ -72,7 +72,7 @@ body {
 }
 
 .news-list {
-  // syili spisku
+  display: block; // syili spisku
 }
 .news-list__item {
   // paddingi margini dlya blocka news

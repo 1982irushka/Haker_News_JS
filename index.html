@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles/styles.css"></link>
-  <script type="module" src="scripts/index.js"></script>
-
-  <title>Haker_news_JS</title>
-</head>
-<body>
-<div class="container">
-  <header class="container__header">
-    <div class="logo">
-      <div class="logo__image"><img src="images/logo.gif"></div>
-      <h2  class="logo__title">Hacker News</h2>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <script type="module" src="scripts/index.js"></script>
+    <title>Haker_news_JS</title>
+  </head>
+  <body>
+    <div class="container">
+      <header class="container__header">
+        <div class="logo">
+          <div class="logo__image"><img src="images/logo.gif" /></div>
+          <h2 class="logo__title">Hacker News</h2>
+        </div>
+        <nav>
+          <ul class="menu">
+            <li id="user" class="menu__item">
+              <a href="" class="">User info</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
+      <div class="container__body">
+        <ol id="list" type="1" class="news-list">
+          <!-- <li class="news-list__ item">
+            <article id="news" class="news">
+              <div class="title">
+                <h2 id="newsTitle" class="ttle__content"></h2>
+                <span id="url"></span>
+              </div>
+              <p id="details">
+                11 points by Stratoscope 4 hours ago | hide | past |<a
+                  id="commentsCount"
+                  >1 comment</a
+                >
+              </p>
+            </section>
+          </li>>-->
+        </ol>
+      </div>
     </div>
-    <nav>
-      <ul class="menu">
-        <li id="user" class="menu__item"><a href="" class="">User info</a></li>
-      </ul>
-    </nav>
-  </header>
-  <div class="container__body">
-    <ol id="list" type="1" class="news-list">
-      <li class="news-list__  item">
-        <section id="news" class="news">
-          <div class="title">
-            <h2 id="newsTitle" class="ttle__content"></h2> 
-            <span id="url"></span>
-          </div>
-          <p id="details">
-            11 points by Stratoscope 4 hours ago | hide | past |<a id="commentsCount">1 comment</a>
-          </p> 
-        </section>
-      </li>
-    </ol>
-  </div>
-
-</div>
-</body>
+  </body>
 </html>
