@@ -53,42 +53,8 @@ newsFetch
     const newsList = document.getElementById('news-list');
     newsList.innerHTML = newsHtml;
   });
-/* 
-const commentsFetch = fetch(
-  'https://hacker-news.firebaseio.com/v0/askstories.json?print=pretty'
-);
-commentsFetch
-  .then((response) => response.json())
-  .then((commentsArr) => {
-    const commentsId = commentsArr.slice(0, 3);
-    console.log(commentsId);
-    const mapresult = commentsId.map((id) =>
-      fetch(
-        `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
-      )
-    );
-    return Promise.all(mapresult);
-  })
-  .then((responses) => Promise.all(responses.map((resp) => resp.json())))
-  .then((comentsData) => {
-    const commentsHtml = comentsData.reduce((accom, commObj) => {
-      const { by: byComm, text: textComm, time: timeComm, ...rest } = commObj;
-      console.log(rest);
-      return `${accom}
-      <li class="comments-list__item">
-        <article class="comments">
-          <p>
-            <span>${byComm}</span>
-            <span>${timeComm}</span>
-          </p>
-          <p class="comments__content">${textComm}</p>
-          </article> 
-      </li>`;
-    }, '');
 
-  }); */
-
-const ira = function fetchSend() {
+const showCommentList = function fetchSend() {
   const commentsFetch = fetch(
     'https://hacker-news.firebaseio.com/v0/askstories.json?print=pretty'
   );
@@ -96,19 +62,17 @@ const ira = function fetchSend() {
     .then((response) => response.json())
     .then((commentsArr) => {
       const commentsId = commentsArr.slice(0, 3);
-      console.log(commentsId);
-      const mapresult = commentsId.map((id) =>
+      const commentsMapResult = commentsId.map((id) =>
         fetch(
           `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
         )
       );
-      return Promise.all(mapresult);
+      return Promise.all(commentsMapResult);
     })
     .then((responses) => Promise.all(responses.map((resp) => resp.json())))
     .then((comentsData) => {
       const commentsHtml = comentsData.reduce((accom, commObj) => {
         const { by: byComm, text: textComm, time: timeComm, ...rest } = commObj;
-        console.log(rest);
         return `${accom}
       <li class="comments-list__item">
         <article class="comments">
@@ -127,6 +91,6 @@ const ira = function fetchSend() {
 };
 const comments = document.getElementsByClassName('news__show-comments');
 for (let elem = 0; elem < comments.length; elem++) {
-  comments[elem].addEventListener('click', ira);
-  //this.addEventListener('click', ira );
+  comments[elem].addEventListener('click', showCommentList);
+  //this.addEventListener('click', showCommentList);
 }
