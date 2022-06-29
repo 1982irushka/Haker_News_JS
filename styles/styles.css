@@ -17,7 +17,7 @@ body {
   align-items: center;
   flex-direction: column;
   width: 100%;
-  
+
   color: #828282;
   font-size: 8pt;
   font-family: Verdana, Geneva, sans-serif;
@@ -84,10 +84,24 @@ body {
   color:inherit;
   cursor: pointer;
 }
+
 .news__show-comments:hover{
-   
+
   border-bottom: 1px solid #828282 ;
 }
+
+
+
+.generic-list {
+  display: flex;
+}
+.generic-list--hidden {
+  display: none;
+}
+.comments-list {
+  display: none;
+}
+
 
 .comments-list__item,
 .news-list__item{
@@ -106,10 +120,32 @@ body {
   display: flex;
   background-image: url(../images/arrow.gif);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .news-title{
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  gap: 1rem;
 }
 .news-title__content {
   color: #000000;

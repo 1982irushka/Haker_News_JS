@@ -20,8 +20,32 @@ newsFetch
     return Promise.all(calls);
   })
   .then((responses) => Promise.all(responses.map((rsp) => rsp.json())))
-  .then((newsData) => {
-    const newsHtml = newsData.reduce((acc, newsObj) => {
+  .then((newsData) =>
+    Promise.all([
+      Promise.resolve(newsData),
+      ...newsData.reduce(
+        (acc, { kids }) => [
+          ...acc,
+          ...kids
+            .slice(0, 4)
+            .map((id) =>
+              fetch(
+                `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+              )
+            ),
+        ],
+        []
+      ),
+    ])
+  )
+  .then(([news, ...commentsResponses]) =>
+    Promise.all([
+      Promise.resolve(news),
+      ...commentsResponses.map((commentsRsp) => commentsRsp.json()),
+    ])
+  )
+  .then(([news, ...comments]) => {
+    const newsHtml = news.reduce((acc, newsObj) => {
       const {
         by,
         descendants,
@@ -29,51 +53,18 @@ newsFetch
         title: titleNews,
         score,
         url,
-        // eslint-disable-next-line no-unused-vars
-        ...rest
+        kids,
       } = newsObj;
-
-      return `${acc}
-      <li class="news-list__item">
-        <article class="news">
-          <div class="news-title">
-            <h2 class="news-title__content">${titleNews}</h2>
-            <a>${url}</a>
-          </div>
-          <p id="details">
-            <span>${descendants}</span> points by
-            <span>${by}</span> 
-            <span>${time}</span> |
-            <button id="news__show-comments" class="news__show-comments">${score} comments</button> 
-          </p>
-        </article>
-        <ul id="comments-list" class="comments-list"></ul>  
-           </li>`;
-    }, '');
-    const newsList = document.getElementById('news-list');
-    newsList.innerHTML = newsHtml;
-  });
-
-const showCommentList = function fetchSend() {
-  const commentsFetch = fetch(
-    'https://hacker-news.firebaseio.com/v0/askstories.json?print=pretty'
-  );
-  commentsFetch
-    .then((response) => response.json())
-    .then((commentsArr) => {
-      const commentsId = commentsArr.slice(0, 3);
-      const commentsMapResult = commentsId.map((id) =>
-        fetch(
-          `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
-        )
-      );
-      return Promise.all(commentsMapResult);
-    })
-    .then((responses) => Promise.all(responses.map((resp) => resp.json())))
-    .then((comentsData) => {
-      const commentsHtml = comentsData.reduce((accom, commObj) => {
-        const { by: byComm, text: textComm, time: timeComm, ...rest } = commObj;
-        return `${accom}
+      const commentsHtml = comments
+        .filter(({ id }) => kids.slice(0, 4).includes(id))
+        .reduce((accom, commObj) => {
+          const {
+            by: byComm,
+            text: textComm,
+            time: timeComm,
+            ...rest
+          } = commObj;
+          return `${accom}
       <li class="comments-list__item">
         <article class="comments">
           <p>
@@ -81,16 +72,38 @@ const showCommentList = function fetchSend() {
             <span>${timeComm}</span>
           </p>
           <p class="comments__content">${textComm}</p>
-          </article> 
+          </article>
       </li>`;
-      }, '');
+        }, '');
 
-      const listComments = document.getElementById('comments-list');
-      listComments.innerHTML = commentsHtml;
-    });
-};
-const comments = document.getElementsByClassName('news__show-comments');
-for (let elem = 0; elem < comments.length; elem++) {
-  comments[elem].addEventListener('click', showCommentList);
-  //this.addEventListener('click', showCommentList);
-}
+      const { hostname } = new URL(url);
+      return `${acc}
+      <li class="news-list__item">
+        <article class="news">
+          <div class="news-title">
+            <h2 class="news-title__content">${titleNews}</h2>
+            <a href="${url}">${hostname}</a>
+          </div>
+          <p id="details">
+            <span>${descendants}</span> points by
+            <span>${by}</span>
+            <span>${time}</span> | <!-- timestamp to readable date -->
+            <button class="news__show-comments">${score} comments</button>
+          </p>
+        </article>
+        <ul class="comments-list">${commentsHtml}</ul>
+           </li>`;
+    }, '');
+    const newsList = document.getElementById('news-list');
+    newsList.innerHTML = newsHtml;
+    const commentsElRef = document.getElementsByClassName(
+      'news__show-comments'
+    );
+    for (let elem = 0; elem < commentsElRef.length; elem++) {
+      commentsElRef[elem].addEventListener('click', (e) => {
+        e.preventDefault();
+        // add or remove css class
+        console.log(e);
+      });
+    }
+  });
