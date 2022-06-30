@@ -78,14 +78,14 @@ body {
   display: flex;
   flex-direction: column;
 }
-.news__show-comments{
+.generic-list__show-comments{
   border:1px solid transparent;
   background: transparent;
   color:inherit;
   cursor: pointer;
 }
 
-.news__show-comments:hover{
+.generic-list__show-comments:hover{
 
   border-bottom: 1px solid #828282 ;
 }
@@ -94,23 +94,26 @@ body {
 
 .generic-list {
   display: flex;
+  flex-direction: column;
 }
 .generic-list--hidden {
   display: none;
 }
-.comments-list {
-  display: none;
+.comments-list
+ {
+  /*display: none;*/
+  flex-direction: column;
 }
 
 
 .comments-list__item,
-.news-list__item{
+.generic-list__item{
   position: relative;
   padding-left: 15px;
   margin-bottom: 7px;
 }
 .comments-list__item:before,
-.news-list__item:before {
+.generic-list__item:before {
   width: 15px;
   height: 15px;
   background-repeat: no-repeat;
@@ -123,31 +126,13 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.news-title{
+.generic-list__title{
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
 }
-.news-title__content {
+.generic-list__content {
   color: #000000;
   font-size: 10pt;
   font-weight: normal;

@@ -77,33 +77,47 @@ newsFetch
         }, '');
 
       const { hostname } = new URL(url);
+
       return `${acc}
-      <li class="news-list__item">
+      <li class="generic-list__item">
         <article class="news">
-          <div class="news-title">
-            <h2 class="news-title__content">${titleNews}</h2>
+          <div class="generic-list__title">
+            <h2 class="generic-list__content">${titleNews}</h2>
             <a href="${url}">${hostname}</a>
-          </div>
+                    </div>
           <p id="details">
             <span>${descendants}</span> points by
             <span>${by}</span>
             <span>${time}</span> | <!-- timestamp to readable date -->
-            <button class="news__show-comments">${score} comments</button>
+            <button class="generic-list__show-comments">${score} comments</button>
           </p>
         </article>
-        <ul class="comments-list">${commentsHtml}</ul>
+  <ul id="comments-list" class="generic-list comments-list generic-list--hidden">${commentsHtml}</ul>
            </li>`;
     }, '');
     const newsList = document.getElementById('news-list');
     newsList.innerHTML = newsHtml;
+
     const commentsElRef = document.getElementsByClassName(
-      'news__show-comments'
+      'generic-list__show-comments'
     );
+
     for (let elem = 0; elem < commentsElRef.length; elem++) {
       commentsElRef[elem].addEventListener('click', (e) => {
         e.preventDefault();
-        // add or remove css class
-        console.log(e);
+        let elts = document.getElementsByClassName('comments-list');
+
+        for (let e = 0; e < elts.length; e++) {
+          var elt = elts[e];
+
+          if (elt.classList.contains('generic-list--hidden')) {
+            elt.classList.remove('generic-list--hidden');
+          } else {
+            elt.classList.add('generic-list--hidden');
+          }
+        }
+
+        console.log(elem);
       });
     }
   });
