@@ -76,48 +76,49 @@ newsFetch
       </li>`;
         }, '');
 
-      const { hostname } = new URL(url);
+      const { hostname = null } = Boolean(url) ? new URL(url) : {};
+      const heading = `<h2 class="generic-list__content">${titleNews}</h2>`;
+      const headingWithLink = `<a href="${url}">${heading}</a>`;
+      const source = url && hostname
+        ? `<a href="${url}">${hostname}</a>` : '';
 
       return `${acc}
       <li class="generic-list__item">
         <article class="news">
           <div class="generic-list__title">
-            <h2 class="generic-list__content">${titleNews}</h2>
-            <a href="${url}">${hostname}</a>
-                    </div>
-          <p id="details">
+            ${hostname ? headingWithLink : heading}
+            ${source}
+          </div>
+          <p>
             <span>${descendants}</span> points by
             <span>${by}</span>
             <span>${time}</span> | <!-- timestamp to readable date -->
             <button class="generic-list__show-comments">${score} comments</button>
           </p>
         </article>
-  <ul id="comments-list" class="generic-list comments-list generic-list--hidden">${commentsHtml}</ul>
+        <ul class="generic-list generic-list--hidden comments-list">${commentsHtml}</ul>
            </li>`;
     }, '');
     const newsList = document.getElementById('news-list');
     newsList.innerHTML = newsHtml;
-
-    const commentsElRef = document.getElementsByClassName(
+    const commentsList = document.getElementsByClassName('comments-list');
+    const commentsButtons = document.getElementsByClassName(
       'generic-list__show-comments'
     );
-
-    for (let elem = 0; elem < commentsElRef.length; elem++) {
-      commentsElRef[elem].addEventListener('click', (e) => {
-        e.preventDefault();
-        let elts = document.getElementsByClassName('comments-list');
-
-        for (let e = 0; e < elts.length; e++) {
-          var elt = elts[e];
-
-          if (elt.classList.contains('generic-list--hidden')) {
-            elt.classList.remove('generic-list--hidden');
-          } else {
-            elt.classList.add('generic-list--hidden');
-          }
-        }
-
-        console.log(elem);
+    commentsButtons.forEach((button) => {
+      button.addEventListener('click', _ => {
+        hideCommentsLists(commentsList);
+        const li = button.closest('.generic-list__item');
+        const [ul] = Array.from(li.getElementsByClassName('comments-list'));
+        debugger;
+        ul.classList.remove('generic-list--hidden');
       });
-    }
+    });
   });
+
+
+  function hideCommentsLists(list) {
+    Array.from(list).filter(item => !item.classList.contains('generic-list--hidden')).forEach((item) =>
+      item.classList.add('generic-list--hidden')
+    );
+  }
