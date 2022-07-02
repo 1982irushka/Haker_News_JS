@@ -5,6 +5,12 @@ import { News } from './modules/news.js';
 News();
 formUser();
 
+function hideCommentsLists(list) {
+  Array.from(list)
+    .filter((item) => !item.classList.contains('generic-list--hidden'))
+    .forEach((item) => item.classList.add('generic-list--hidden'));
+}
+
 const newsFetch = fetch(
   'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty'
 );
@@ -58,12 +64,7 @@ newsFetch
       const commentsHtml = comments
         .filter(({ id }) => kids.slice(0, 4).includes(id))
         .reduce((accom, commObj) => {
-          const {
-            by: byComm,
-            text: textComm,
-            time: timeComm,
-            ...rest
-          } = commObj;
+          const { by: byComm, text: textComm, time: timeComm } = commObj;
           return `${accom}
       <li class="comments-list__item">
         <article class="comments">
@@ -76,7 +77,7 @@ newsFetch
       </li>`;
         }, '');
 
-      const { hostname = null } = Boolean(url) ? new URL(url) : {};
+      const { hostname = null } = url ? new URL(url) : {};
       const heading = `<h2 class="generic-list__content">${titleNews}</h2>`;
       const headingWithLink = `<a href="${url}">${heading}</a>`;
       const source = url && hostname ? `<a href="${url}">${hostname}</a>` : '';
@@ -104,27 +105,20 @@ newsFetch
     const commentsButtons = document.getElementsByClassName(
       'generic-list__show-comments'
     );
-    commentsButtons.forEach((button) => {
-      button.addEventListener('click', (_) => {
+    Array.from(commentsButtons).forEach((button) => {
+      button.addEventListener('click', () => {
         hideCommentsLists(commentsList);
         const li = button.closest('.generic-list__item');
         const [ul] = Array.from(li.getElementsByClassName('comments-list'));
-        debugger;
         ul.classList.remove('generic-list--hidden');
       });
     });
   });
 
-function hideCommentsLists(list) {
-  Array.from(list)
-    .filter((item) => !item.classList.contains('generic-list--hidden'))
-    .forEach((item) => item.classList.add('generic-list--hidden'));
-}
-
 let submit = document.getElementById('submitBtn');
 /* submit.addEventListener('click', validAge); */
 /*submit.addEventListener('click', validFile); not work */
-/* submit.addEventListener('click', validRadio); */
+submit.addEventListener('click', validRadio);
 
 // input type number (age) validate/*
 function validAge() {
@@ -137,18 +131,20 @@ function validAge() {
   }
 }
 
-function validRadio() {
-  var gender = document.getElementsByName('gender');
-  if (gender[0].checked == true) {
-    console.log('Ура, ви чоловік');
-  } else if (gender[1].checked == true) {
-    console.log('Ура, ви жінка');
-  } else {
-    console.log('виберіть стать');
-    return false;
-  }
-  return true;
-} /* NOT WORK
+// function validRadio() {
+//   var gender = document.getElementsByName('gender');
+//   if (gender[0].checked == true) {
+//     console.log('Ура, ви чоловік');
+//   } else if (gender[1].checked == true) {
+//     console.log('Ура, ви жінка');
+//   } else {
+//     console.log('виберіть стать');
+//     return false;
+//   }
+//   return true;
+// }
+
+/* NOT WORK
 
 /* input type file ( upload image) NOT WORK
 
@@ -165,19 +161,21 @@ function validFile(file) {
  */
 
 // valid input type radio (male/female) Not Working
-/* 
+
 let radioMale = document.getElementById('genderMale').checked;
-let radioFemale = document.getElementById('genderFemale').checked; */
-/* function validRadio() {
-  if (radioMale == '' && radioFemale == '') {
+let radioFemale = document.getElementById('genderFemale').checked;
+
+function validRadio() {
+  if (radioMale === '' && radioFemale === '') {
     alert('not select radio');
     return false;
   } else {
     alert(' you select radio');
     return true;
   }
-} */
-/* not working 
+}
+
+/* not working
 function validRadio() {
   if (radioMale == true) {
     alert('yes');
