@@ -143,4 +143,11 @@ body {
   font-size:9pt;
   color:black;
 }
-.show{background: green;}
+
+.form{
+  flex-direction: column;
+  display: flex;
+}
+.form__item{
+  display: flex;
+}

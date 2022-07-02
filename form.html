@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <script type="module" src="scripts/index.js"></script>
+    <title>Form Haker_news_JS</title>
+  </head>
+  <body>
+    <div class="form">
+        <form action="" class="">
+            <div class="form__item">                
+            <input   type="text" class="" placeholder="name"> 
+            </div>                                
+            <div class="form__item">
+                <input type="radio" id="genderMale"
+                name="gender" value="Male" >
+                <label for="genderMale">Male</label>
+                <input type="radio" id="genderFemale"
+               name="gender" value="Woman" >
+              <label for="genderFemale">Female</label>
+            </div>
+            <div class="form__item">
+                <input id="ageField" type="number"  placeholder="вік між 18 до 100 років"  min="18" max="100" >   
+            </div>        
+            <div class="form__item">
+               <input  id="uploadImg" type="file"  accept=".jpg, .png, .gif, svg" class="">
+            </div>         
+                 <input id="submitBtn" type="submit" value="Відправити">
+        </form> 
+        
+    </div>
+  </body>
+</html>
