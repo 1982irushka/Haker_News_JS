@@ -115,13 +115,26 @@ newsFetch
     });
   });
 
-  let userForm = document.forms.user;
+let userForm = document.forms.user;
+
 userForm.onsubmit = function (event) {
   event.preventDefault();
-    let userFormValue = userForm.elements.age.value;
-    if (typeof userFormValue === 'number') {
-      console.log('yes');
-    } else {
-      console.log('no');
-    }
-  };
+
+  let genderRadio = userForm.elements.gender;
+  let genderRadioMaleChecked = genderRadio[0].checked;
+  let genderRadioFemaleChecked = genderRadio[1].checked;
+  if (genderRadioFemaleChecked === true) {
+    console.log('female checked');
+  } else if (genderRadioMaleChecked === true) {
+    console.log('male checked');
+  } else {
+    console.log('ups');
+  }
+  let userFormAgeValue = userForm.elements.age.value;
+  console.log(typeof userFormAgeValue);
+  if (typeof userFormAgeValue === 'number') {
+    console.log('yes');
+  } else {
+    console.log('no');
+  }
+};

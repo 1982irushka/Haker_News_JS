@@ -99,20 +99,14 @@ body {
 .generic-list--hidden {
   display: none;
 }
-.comments-list
- {
-  /*display: none;*/
-  flex-direction: column;
-}
 
 
-.comments-list__item,
+
 .generic-list__item{
   position: relative;
   padding-left: 15px;
   margin-bottom: 7px;
 }
-.comments-list__item:before,
 .generic-list__item:before {
   width: 15px;
   height: 15px;
@@ -143,12 +137,38 @@ body {
   font-size:9pt;
   color:black;
 }
-.container__body{display: flex;}
+.container__body{
+  
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 0px;
+  }
 .form{
   flex-direction: column;
   display: flex;
 }
 .form__item{
-  display: flex;
   margin: 3px 0;
+  height: 25px;
+  align-items: center;
+  
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+}
+.form__button{
+  height: 30px;
+  width:80px;
+  background-color: #ff6600;
+  color:black;
+border: 1px solid transparent;
+}
+.form__input{
+  height: 100%;
+}
+.form__title{
+  font-size: 16px;
+  color:black;
 }

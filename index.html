@@ -28,23 +28,24 @@
         </ol>
         <form class="form" name="user">
           <div class="form__item">
-          <input   type="text" class="" placeholder="name">
+          <p class="form__title">User name</p>
+          <input   type="text" class="form__input" placeholder="name">
           </div>
           <div class="form__item">
-              <input type="radio" id="genderMale"
+            <p class="form__title">Gender</p>
+            <div>
+            <input class="form__input" type="radio" id="genderMale"
               name="gender" value="Male" >
               <label for="genderMale">Male</label>
               <input type="radio" id="genderFemale"
              name="gender" value="Female" >
             <label for="genderFemale">Female</label>
-          </div>
+          </div></div>
           <div class="form__item">
-            <input id="ageField" type="number" name="age" value="20"  pattern="-?(\d+|\d+.\d+|.\d+)([eE][-+]?\d+)?">
+            <p class="form__title">Age</p>
+            <input id="ageField" class="form__input" type="number" name="age" value="20" >
           </div>
-          <div class="form__item">
-             <input  id="uploadImg" type="file"  accept=".jpg, .png, .gif, svg" class="">
-          </div>
-            <button id="submitBtn" type="submit">Відправити</button>
+            <button id="submitBtn" class="form__button" type="submit">Відправити</button>
       </form>
     </div>
   </body>
