@@ -115,73 +115,13 @@ newsFetch
     });
   });
 
-let submit = document.getElementById('submitBtn');
-/* submit.addEventListener('click', validAge); */
-/*submit.addEventListener('click', validFile); not work */
-submit.addEventListener('click', validRadio);
+function validateForm() {
+  let userForm = document.forms.user;
+  let userFormValue = userForm.elements.age.value;
 
-// input type number (age) validate/*
-function validAge() {
-  let ageField = document.getElementById('ageField').value;
-  console.log(ageField);
-  if (ageField <= 100 && ageField >= 18) {
-    console.log('умничка,правильний вік');
+  if (typeof userFormValue === 'number') {
+    console.log('yes');
   } else {
-    console.log('Please enter a number between 18 - 100 ');
+    console.log('no');
   }
 }
-
-// function validRadio() {
-//   var gender = document.getElementsByName('gender');
-//   if (gender[0].checked == true) {
-//     console.log('Ура, ви чоловік');
-//   } else if (gender[1].checked == true) {
-//     console.log('Ура, ви жінка');
-//   } else {
-//     console.log('виберіть стать');
-//     return false;
-//   }
-//   return true;
-// }
-
-/* NOT WORK
-
-/* input type file ( upload image) NOT WORK
-
-var fileTypes = ['.jpeg', '.svg', '.png', 'gif'];
-
-function validFile(file) {
-  for (var i = 0; i < fileTypes.length; i++) {
-    if (file.type === fileTypes[i]) {
-      return true;
-    }
-  }
-  return false;
-}
- */
-
-// valid input type radio (male/female) Not Working
-
-let radioMale = document.getElementById('genderMale').checked;
-let radioFemale = document.getElementById('genderFemale').checked;
-
-function validRadio() {
-  if (radioMale === '' && radioFemale === '') {
-    alert('not select radio');
-    return false;
-  } else {
-    alert(' you select radio');
-    return true;
-  }
-}
-
-/* not working
-function validRadio() {
-  if (radioMale == true) {
-    alert('yes');
-  } else if (radioFemale == true) {
-    alert('yes');
-  } else {
-    alert('no');
-  }
-} */

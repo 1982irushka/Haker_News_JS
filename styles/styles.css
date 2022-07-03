@@ -143,11 +143,12 @@ body {
   font-size:9pt;
   color:black;
 }
-
+.container__body{display: flex;}
 .form{
   flex-direction: column;
   display: flex;
 }
 .form__item{
   display: flex;
+  margin: 3px 0;
 }
