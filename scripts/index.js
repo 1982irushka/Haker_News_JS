@@ -143,10 +143,11 @@ userForm.onsubmit = function (event) {
   }
 
   let userFormAgeValue = userForm.elements.age.value;
-  /* console.log(typeof userFormAgeValue); */
-  if (typeof userFormAgeValue === 'number') {
+
+  if (typeof userFormAgeValue === 'string') {
+    let convert = Number(userFormAgeValue);
     console.log('nice age!');
   } else {
-    console.log('please enter age');
+    console.log('please enter age with number');
   }
 };
