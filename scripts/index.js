@@ -115,13 +115,13 @@ newsFetch
     });
   });
 
-function validateForm() {
   let userForm = document.forms.user;
-  let userFormValue = userForm.elements.age.value;
-
-  if (typeof userFormValue === 'number') {
-    console.log('yes');
-  } else {
-    console.log('no');
-  }
-}
+userForm.onsubmit = function (event) {
+  event.preventDefault();
+    let userFormValue = userForm.elements.age.value;
+    if (typeof userFormValue === 'number') {
+      console.log('yes');
+    } else {
+      console.log('no');
+    }
+  };
