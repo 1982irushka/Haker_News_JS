@@ -119,22 +119,34 @@ let userForm = document.forms.user;
 
 userForm.onsubmit = function (event) {
   event.preventDefault();
+  let countrySelect = userForm.elements.country;
+  let countrySelectIndex = countrySelect.selectedIndex;
+
+  if (countrySelectIndex === 0) {
+    console.log('you dont choouse country');
+  } else if (countrySelectIndex === 3) {
+    alert('Русский корабль иди.. you are blocked ');
+  } else {
+    console.log('cool,you choose country');
+  }
 
   let genderRadio = userForm.elements.gender;
   let genderRadioMaleChecked = genderRadio[0].checked;
   let genderRadioFemaleChecked = genderRadio[1].checked;
+
   if (genderRadioFemaleChecked === true) {
-    console.log('female checked');
+    console.log('female');
   } else if (genderRadioMaleChecked === true) {
-    console.log('male checked');
+    console.log('male');
   } else {
-    console.log('ups');
+    console.log('you dont choose gender');
   }
+
   let userFormAgeValue = userForm.elements.age.value;
-  console.log(typeof userFormAgeValue);
+  /* console.log(typeof userFormAgeValue); */
   if (typeof userFormAgeValue === 'number') {
-    console.log('yes');
+    console.log('nice age!');
   } else {
-    console.log('no');
+    console.log('please enter age');
   }
 };
