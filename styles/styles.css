@@ -5,9 +5,6 @@
 ul {
   list-style: none;
 }
-ol {
-  margin-left: 20px;
-}
 a {
   text-decoration: none;
   color: inherit;
@@ -140,18 +137,21 @@ body {
 .container__body{
   
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 55% 45%;
     grid-template-rows: 1fr;
     grid-column-gap: 10px;
     grid-row-gap: 0px;
+    padding: 0 20px;
   }
 .form{
   flex-direction: column;
   display: flex;
+  border:1px solid grey;
+  padding: 10px;
 }
 .form__item{
   margin: 3px 0;
-  height: 25px;
+  height: 100%;
   align-items: center;
   
   display: grid;
@@ -159,11 +159,16 @@ body {
   grid-template-rows: 1fr;
 }
 .form__button{
-  height: 30px;
+ line-height: 30px;
   width:80px;
   background-color: #ff6600;
   color:black;
+  cursor: pointer;
+  
 border: 1px solid transparent;
+}
+.form__button:hover{
+  border: 1px solid grey;
 }
 .form__input{
   height: 25px;
@@ -172,3 +177,11 @@ border: 1px solid transparent;
   font-size: 16px;
   color:black;
 }
+.form__mistake{
+  font-size: 14px;
+  color:red;
+}
+.form__radio{display: flex;
+align-items: center;}
+
+.user-info{display: none;}

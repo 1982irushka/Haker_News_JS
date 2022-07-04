@@ -27,13 +27,17 @@
         <ol id="news-list" type="1" class="generic-list">
         </ol>
         <form class="form" name="user">
+          <h2 class="form__title">Login form</h2>
+          <div id="formMistake" class="form__mistake">
+
+          </div>
           <div class="form__item">
           <p class="form__title">User name</p>
-          <input   type="text" class="form__input" placeholder="name">
+          <input   type="text" class="form__input" placeholder="name" name="name">
           </div>
           <div class="form__item">
             <p class="form__title">Gender</p>
-            <div>
+            <div class="form__radio">
             <input class="form__input" type="radio" id="genderMale"
               name="gender" value="Male" >
               <label for="genderMale">Male</label>
@@ -43,7 +47,7 @@
           </div></div>
           <div class="form__item">
             <p class="form__title">Age</p>
-            <input id="ageField" class="form__input" type="number" name="age" value="20" >
+            <input id="ageField" class="form__input" type="number" name="age">
           </div>
           <div class="form__item">
             <p class="form__title">Country</p>
@@ -51,12 +55,17 @@
               <option value="empty">choouse country</option>
               <option value="ukraine">Ukraine</option>
               <option value="poland">Poland</option>
-              <option value="poland">Moskovia</option>
+              <option value="moskoviya">Moskoviya</option>
             </select>
             
           </div>
             <button id="submitBtn" class="form__button" type="submit">Відправити</button>
       </form>
+      <div id="userInfo" class="user-info">
+        <p id="userInfoAge" class="user-info__item"></p>
+        <p id="userInfoGender" class="user-info__item"></p>
+
+      </div>
     </div>
   </body>
 </html>

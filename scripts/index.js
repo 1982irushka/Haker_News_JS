@@ -119,35 +119,83 @@ let userForm = document.forms.user;
 
 userForm.onsubmit = function (event) {
   event.preventDefault();
+
+  let mistakeText;
+
   let countrySelect = userForm.elements.country;
   let countrySelectIndex = countrySelect.selectedIndex;
-
   if (countrySelectIndex === 0) {
-    console.log('you dont choouse country');
+    mistakeText = 'you dont choose contry';
+    invalidMessage();
   } else if (countrySelectIndex === 3) {
-    alert('Русский корабль иди.. you are blocked ');
+    alert('Русский корабль иди .. you are blocked ');
   } else {
     console.log('cool,you choose country');
+    validField();
   }
 
   let genderRadio = userForm.elements.gender;
   let genderRadioMaleChecked = genderRadio[0].checked;
   let genderRadioFemaleChecked = genderRadio[1].checked;
-
+  let genderRadioValue;
+  let infoUserGender = document.getElementById('userInfoGender');
+  /* 
+  if (genderRadioFemaleChecked || genderRadioMaleChecked) {
+    console.log('yes');
+  } else {
+    console.log('no');
+  } */
   if (genderRadioFemaleChecked === true) {
     console.log('female');
+    validField();
+
+    genderRadioValue = genderRadio[1].value;
+    infoUserGender.textContent = `Name ${genderRadioValue}`;
   } else if (genderRadioMaleChecked === true) {
-    console.log('male');
+    validField();
+    genderRadioValue = genderRadio[0].value;
+    infoUserGender.textContent = `Name ${genderRadioValue}`;
   } else {
-    console.log('you dont choose gender');
+    mistakeText = 'Please choose gender';
+    invalidMessage();
   }
 
   let userFormAgeValue = userForm.elements.age.value;
 
   if (typeof userFormAgeValue === 'string') {
     let convert = Number(userFormAgeValue);
-    console.log('nice age!');
+    validField();
+    let infoUserAge = document.getElementById('userInfoAge');
+    infoUserAge.textContent = `Age ${userFormAgeValue}`;
   } else {
-    console.log('please enter age with number');
+  /* else if (userFormAgeValue === ' ') {
+    console.log('empty string for number');
+   }*/
+    mistakeText = 'please enter only number to age field';
+    invalidMessage();
+  }
+
+  /* let nameText = userForm.elements.name;
+  let nameTextValue = nameText.value;
+  
+  if (nameTextValue === 'string') {
+    console.log('ви надрукували літери');
+  } else {
+    console.log('введіть літери');
+
+    mistakeText = 'please enter only letter to name field';
+    invalidMessage();
+  } */
+  function invalidMessage() {
+    let formMistake = document.getElementById('formMistake');
+    let mistakeDescription = document.createElement('p');
+    mistakeDescription.setAttribute('class', 'form__mistake');
+    formMistake.appendChild(mistakeDescription).textContent = mistakeText;
+  }
+  function validField() {
+    let userInformation = document.getElementById('userInfo');
+    /*     userForm.style.display = 'none';
+    userInformation.style.display = 'block';
+   */
   }
 };
