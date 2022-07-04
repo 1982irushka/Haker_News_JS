@@ -123,7 +123,23 @@ userForm.onsubmit = function (event) {
   let mistakeText;
 
   let countrySelect = userForm.elements.country;
-  let countrySelectIndex = countrySelect.selectedIndex;
+
+  let countrySelectValue = countrySelect.value;
+  //console.log(countrySelectValue);
+
+  if (countrySelectValue === 'moskoviya') {
+    console.log('русский корабль иди.. you are blocked');
+  } else if (countrySelectValue === '') {
+    mistakeText = 'Please choose country';
+    invalidMessage();
+  } else {
+    validField();
+    let infoUserCountry = document.getElementById('userInfoCountry');
+    infoUserCountry.textContent = `country ${countrySelectValue}`;
+  }
+  /* робочий варіант по індексу
+
+   let countrySelectIndex = countrySelect.selectedIndex;
   if (countrySelectIndex === 0) {
     mistakeText = 'you dont choose contry';
     invalidMessage();
@@ -133,7 +149,7 @@ userForm.onsubmit = function (event) {
     console.log('cool,you choose country');
     validField();
   }
-
+ */
   let genderRadio = userForm.elements.gender;
   let genderRadioMaleChecked = genderRadio[0].checked;
   let genderRadioFemaleChecked = genderRadio[1].checked;
@@ -146,7 +162,6 @@ userForm.onsubmit = function (event) {
     console.log('no');
   } */
   if (genderRadioFemaleChecked === true) {
-    console.log('female');
     validField();
 
     genderRadioValue = genderRadio[1].value;
@@ -161,16 +176,15 @@ userForm.onsubmit = function (event) {
   }
 
   let userFormAgeValue = userForm.elements.age.value;
-
+  console.log(userFormAgeValue);
   if (typeof userFormAgeValue === 'string') {
     let convert = Number(userFormAgeValue);
     validField();
     let infoUserAge = document.getElementById('userInfoAge');
     infoUserAge.textContent = `Age ${userFormAgeValue}`;
-  } else {
-  /* else if (userFormAgeValue === ' ') {
+  } /* else if (userFormAgeValue === '') {
     console.log('empty string for number');
-   }*/
+  }  */ else {
     mistakeText = 'please enter only number to age field';
     invalidMessage();
   }
@@ -193,9 +207,8 @@ userForm.onsubmit = function (event) {
     formMistake.appendChild(mistakeDescription).textContent = mistakeText;
   }
   function validField() {
-    let userInformation = document.getElementById('userInfo');
-    /*     userForm.style.display = 'none';
-    userInformation.style.display = 'block';
-   */
+    let userInformation = document.getElementById('userInfo'); /* 
+    userForm.style.display = 'none';
+    userInformation.style.display = 'block'; */
   }
 };
