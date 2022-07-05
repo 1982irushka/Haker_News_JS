@@ -11,6 +11,11 @@ function hideCommentsLists(list) {
     .forEach((item) => item.classList.add('generic-list--hidden'));
 }
 
+function getAgeValidity(value) {
+  const isNumber = !isNaN(value) && typeof value === 'number';
+  return isNumber && Number(value) > 0;
+}
+
 const newsFetch = fetch(
   'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty'
 );
@@ -120,6 +125,8 @@ let userForm = document.forms.user;
 userForm.onsubmit = function (event) {
   event.preventDefault();
 
+  const errors = new Map();
+
   let mistakeText;
 
   let countrySelect = userForm.elements.country;
@@ -131,11 +138,15 @@ userForm.onsubmit = function (event) {
     console.log('русский корабль иди.. you are blocked');
   } else if (countrySelectValue === '') {
     mistakeText = 'Please choose country';
-    invalidMessage();
+    errors.set('country', 'Please choose country');
+    // invalidMessage();
   } else {
-    validField();
+    // validField();
     let infoUserCountry = document.getElementById('userInfoCountry');
     infoUserCountry.textContent = `country ${countrySelectValue}`;
+    if (errors.has('country')) {
+      errors.delete('country');
+    }
   }
   /* робочий варіант по індексу
 
@@ -155,60 +166,79 @@ userForm.onsubmit = function (event) {
   let genderRadioFemaleChecked = genderRadio[1].checked;
   let genderRadioValue;
   let infoUserGender = document.getElementById('userInfoGender');
-  /* 
+  /*
   if (genderRadioFemaleChecked || genderRadioMaleChecked) {
     console.log('yes');
   } else {
     console.log('no');
   } */
   if (genderRadioFemaleChecked === true) {
-    validField();
+    // validField();
 
     genderRadioValue = genderRadio[1].value;
     infoUserGender.textContent = `Name ${genderRadioValue}`;
+    if (errors.has('gender')) {
+      errors.delete('gender');
+    }
   } else if (genderRadioMaleChecked === true) {
-    validField();
+    // validField();
     genderRadioValue = genderRadio[0].value;
     infoUserGender.textContent = `Name ${genderRadioValue}`;
+    if (errors.has('gender')) {
+      errors.delete('gender');
+    }
   } else {
     mistakeText = 'Please choose gender';
-    invalidMessage();
+    errors.set('gender', 'Please choose gender');
+    // invalidMessage();
   }
 
   let userFormAgeValue = userForm.elements.age.value;
   console.log(userFormAgeValue);
-  if (typeof userFormAgeValue === 'string') {
-    let convert = Number(userFormAgeValue);
-    validField();
+  const isValidAge = getAgeValidity(Number(userFormAgeValue));
+  if (isValidAge) {
+    // validField();
     let infoUserAge = document.getElementById('userInfoAge');
     infoUserAge.textContent = `Age ${userFormAgeValue}`;
+    if (errors.has('age')) {
+      errors.delete('age');
+    }
   } /* else if (userFormAgeValue === '') {
     console.log('empty string for number');
   }  */ else {
-    mistakeText = 'please enter only number to age field';
-    invalidMessage();
+    mistakeText = 'please enter number to age field';
+    errors.set('age', 'please enter number to age field');
+    // invalidMessage();
   }
 
-  /* let nameText = userForm.elements.name;
+  let nameText = userForm.elements.name;
   let nameTextValue = nameText.value;
-  
-  if (nameTextValue === 'string') {
-    console.log('ви надрукували літери');
+  const isValidName = nameTextValue && /^[a-z]+$/.test(nameTextValue);
+  if (isValidName) {
+    if (errors.has('name')) {
+      errors.delete('name');
+    }
   } else {
-    console.log('введіть літери');
-
-    mistakeText = 'please enter only letter to name field';
-    invalidMessage();
-  } */
-  function invalidMessage() {
-    let formMistake = document.getElementById('formMistake');
-    let mistakeDescription = document.createElement('p');
-    mistakeDescription.setAttribute('class', 'form__mistake');
-    formMistake.appendChild(mistakeDescription).textContent = mistakeText;
+    errors.set('name', 'Please fill name input');
   }
+
+  invalidMessage(errors);
+  if (errors.size === 0) {
+    validField(errors);
+  }
+
+  function invalidMessage(mapOfErrors) {
+    let formMistake = document.getElementById('formMistake');
+    let errorMgs = '';
+    mapOfErrors.forEach((value) => {
+      errorMgs = `${errorMgs}<li class="form__mistake">${value}</li>`;
+    });
+    formMistake.innerHTML = errorMgs;
+  }
+
   function validField() {
-    let userInformation = document.getElementById('userInfo'); /* 
+    let userInformation = document.getElementById('userInfo');
     userForm.style.display = 'none';
-    userInformation.style.display = 'block'; */
+    userInformation.style.display = 'block';
   }
 };
