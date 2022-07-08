@@ -12,21 +12,20 @@ function hideCommentsLists(list) {
 }
 
 function getAgeValidity(value) {
-  const isNumber = !isNaN(value) && typeof value === 'number';
+  const isNumber = !Number.isNaN(value) && typeof value === 'number';
   return isNumber && Number(value) > 0;
 }
 
 const newsFetch = fetch(
   'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty'
 );
-console.log(newsFetch);
 
 newsFetch // Promise
   .then((response) => response.json())
   .then((ids) => {
     const newsIds = ids.slice(0, 5); //повертає масив з перших 5 id
     const calls = newsIds.map(
-      //з масиву newsIds*(перші 5 id) беруться значення ключа id, кожен підставляється в посилання до якого застосовується fetch. Результат методу - масив з 5 промісів записані в змінну calls
+      //з масиву newsIds*(перші 5 id) беруться значення id, кожен підставляється в посилання до якого застосовується fetch. Результат методу - масив з 5 промісів записані в змінну calls
       (id) =>
         fetch(
           `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
@@ -36,30 +35,6 @@ newsFetch // Promise
   })
   .then((responses) => Promise.all(responses.map((rsp) => rsp.json())))
   .then((pyatNovin) => {
-    // debugger;
-    // const persheZnachennya = Promise.resolve(pyatNovin);
-    // const usiInshiZnachennya = pyatNovin.reduce(
-    //   //reduce метод що повертає з масиву одне значення де acc попереднє значення а kids поточне значення
-    //   (acc, { kids }) => [
-    //     ...acc,
-    //     ...kids
-    //       .slice(0, 4) //у кожного kids(поточне значення) метод slice вибирає 4 перші елементти і повертає масив елементів.
-    //       .map(
-    //         (
-    //           id // map до кожного елементу масиву зі значенням ключа id застосовує фетч
-    //         ) =>
-    //           fetch(
-    //             `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
-    //           )
-    //       ),
-    //   ],
-    //   []
-    // );
-
-    // const miyNoviyMasiv = [];
-    // const miyNovMasDva = [Promise.resolve(pyatNovin)];
-    // const miyNovMasTri = [...usiInshiZnachennya];
-    // const finalRes = [persheZnachennya, ...usiInshiZnachennya];
     return Promise.all([
       Promise.resolve(pyatNovin),
       ...pyatNovin.reduce(
@@ -83,15 +58,13 @@ newsFetch // Promise
   })
   .then(
     (
-      results //news це масив і comments це масив
-    ) => {
-      debugger;
-      const [news, ...commentsResponses] = results;
-      return Promise.all([
-        Promise.resolve(news),
+      [news, ...commentsResponses] //commResp masyv obj response z masyvu promisiv
+    ) =>
+      Promise.all([
+        //maryv promisiv
+        Promise.resolve(news), //promis yakya resolvytsya masyvom novyn
         ...commentsResponses.map((commentsRsp) => commentsRsp.json()),
-      ]);
-    }
+      ])
   )
   .then(([news, ...comments]) => {
     //news це масив і comments це масив
