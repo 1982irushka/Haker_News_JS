@@ -19,25 +19,50 @@ function getAgeValidity(value) {
 const newsFetch = fetch(
   'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty'
 );
-newsFetch //масив промісів
+console.log(newsFetch);
+
+newsFetch // Promise
   .then((response) => response.json())
   .then((ids) => {
-    const newsIds = ids.slice(0, 5); //повертає масив з перших 5 промісів
+    const newsIds = ids.slice(0, 5); //повертає масив з перших 5 id
     const calls = newsIds.map(
-      //з масиву newsIds*(перші 5 промісів) беруться значення ключа id, кожен підставляється в посилання до якого застосовується fetch. Результат методу - масив з 5 промісів записані в змінну calls
+      //з масиву newsIds*(перші 5 id) беруться значення ключа id, кожен підставляється в посилання до якого застосовується fetch. Результат методу - масив з 5 промісів записані в змінну calls
       (id) =>
         fetch(
           `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
         )
     );
-    return Promise.all(calls); //повертає один проміс call як результат виконнання 5 фетчів
+    return Promise.all(calls); //повертає masiv responsiv z виконнання 5 фетчів
   })
   .then((responses) => Promise.all(responses.map((rsp) => rsp.json())))
+  .then((pyatNovin) => {
+    // debugger;
+    // const persheZnachennya = Promise.resolve(pyatNovin);
+    // const usiInshiZnachennya = pyatNovin.reduce(
+    //   //reduce метод що повертає з масиву одне значення де acc попереднє значення а kids поточне значення
+    //   (acc, { kids }) => [
+    //     ...acc,
+    //     ...kids
+    //       .slice(0, 4) //у кожного kids(поточне значення) метод slice вибирає 4 перші елементти і повертає масив елементів.
+    //       .map(
+    //         (
+    //           id // map до кожного елементу масиву зі значенням ключа id застосовує фетч
+    //         ) =>
+    //           fetch(
+    //             `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+    //           )
+    //       ),
+    //   ],
+    //   []
+    // );
 
-  .then((newsData) =>
-    Promise.all([
-      Promise.resolve(newsData),
-      ...newsData.reduce(
+    // const miyNoviyMasiv = [];
+    // const miyNovMasDva = [Promise.resolve(pyatNovin)];
+    // const miyNovMasTri = [...usiInshiZnachennya];
+    // const finalRes = [persheZnachennya, ...usiInshiZnachennya];
+    return Promise.all([
+      Promise.resolve(pyatNovin),
+      ...pyatNovin.reduce(
         //reduce метод що повертає з масиву одне значення де acc попереднє значення а kids поточне значення
         (acc, { kids }) => [
           ...acc,
@@ -54,16 +79,19 @@ newsFetch //масив промісів
         ],
         []
       ),
-    ])
-  )
+    ]);
+  })
   .then(
     (
-      [news, ...commentsResponses] //news це масив і comments це масив
-    ) =>
-      Promise.all([
+      results //news це масив і comments це масив
+    ) => {
+      debugger;
+      const [news, ...commentsResponses] = results;
+      return Promise.all([
         Promise.resolve(news),
         ...commentsResponses.map((commentsRsp) => commentsRsp.json()),
-      ])
+      ]);
+    }
   )
   .then(([news, ...comments]) => {
     //news це масив і comments це масив
