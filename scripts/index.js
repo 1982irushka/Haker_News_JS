@@ -19,45 +19,58 @@ function getAgeValidity(value) {
 const newsFetch = fetch(
   'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty'
 );
-newsFetch
+newsFetch //масив промісів
   .then((response) => response.json())
   .then((ids) => {
-    const newsIds = ids.slice(0, 5);
-    const calls = newsIds.map((id) =>
-      fetch(
-        `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
-      )
+    const newsIds = ids.slice(0, 5); //повертає масив з перших 5 промісів
+    const calls = newsIds.map(
+      //з масиву newsIds*(перші 5 промісів) беруться значення ключа id, кожен підставляється в посилання до якого застосовується fetch. Результат методу - масив з 5 промісів записані в змінну calls
+      (id) =>
+        fetch(
+          `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+        )
     );
-    return Promise.all(calls);
+    return Promise.all(calls); //повертає один проміс call як результат виконнання 5 фетчів
   })
   .then((responses) => Promise.all(responses.map((rsp) => rsp.json())))
+
   .then((newsData) =>
     Promise.all([
       Promise.resolve(newsData),
       ...newsData.reduce(
+        //reduce метод що повертає з масиву одне значення де acc попереднє значення а kids поточне значення
         (acc, { kids }) => [
           ...acc,
           ...kids
-            .slice(0, 4)
-            .map((id) =>
-              fetch(
-                `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
-              )
+            .slice(0, 4) //у кожного kids(поточне значення) метод slice вибирає 4 перші елементти і повертає масив елементів.
+            .map(
+              (
+                id // map до кожного елементу масиву зі значенням ключа id застосовує фетч
+              ) =>
+                fetch(
+                  `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+                )
             ),
         ],
         []
       ),
     ])
   )
-  .then(([news, ...commentsResponses]) =>
-    Promise.all([
-      Promise.resolve(news),
-      ...commentsResponses.map((commentsRsp) => commentsRsp.json()),
-    ])
+  .then(
+    (
+      [news, ...commentsResponses] //news це масив і comments це масив
+    ) =>
+      Promise.all([
+        Promise.resolve(news),
+        ...commentsResponses.map((commentsRsp) => commentsRsp.json()),
+      ])
   )
   .then(([news, ...comments]) => {
+    //news це масив і comments це масив
     const newsHtml = news.reduce((acc, newsObj) => {
+      // до масиву news застосвується метод reduce де асс попереднэ значення а newsObj поточне. Результат (одне значення) записано в змінну newsHtml
       const {
+        //деструкція поточного значення newsObj(5 обєктів). результат 7 змінних зі значеннями
         by,
         descendants,
         time,
@@ -66,10 +79,12 @@ newsFetch
         url,
         kids,
       } = newsObj;
-      const commentsHtml = comments
-        .filter(({ id }) => kids.slice(0, 4).includes(id))
+
+      const commentsHtml = comments //масив comments.filter повертає масив з id
+        .filter(({ id }) => kids.slice(0, 4).includes(id)) //kids.slice повертає масив з перших 4 елементів kids в яких є ключ id
         .reduce((accom, commObj) => {
-          const { by: byComm, text: textComm, time: timeComm } = commObj;
+          // до масиву метод reduce(accom - попереднє значення, comm Obj поточне)
+          const { by: byComm, text: textComm, time: timeComm } = commObj; //деструктирізація обєкта commOb під час якої змінні - ключі перейменовуються
           return `${accom}
       <li class="comments-list__item">
         <article class="comments">
@@ -119,7 +134,7 @@ newsFetch
       });
     });
   });
-
+//////////////////////////////////////////
 let userForm = document.forms.user;
 
 userForm.onsubmit = function (event) {
@@ -127,97 +142,77 @@ userForm.onsubmit = function (event) {
 
   const errors = new Map();
 
-  let mistakeText;
+  //let mistakeText;
 
   let countrySelect = userForm.elements.country;
 
   let countrySelectValue = countrySelect.value;
-  //console.log(countrySelectValue);
 
-  if (countrySelectValue === 'moskoviya') {
-    console.log('русский корабль иди.. you are blocked');
-  } else if (countrySelectValue === '') {
-    mistakeText = 'Please choose country';
+  if (countrySelectValue === '') {
+    //  mistakeText = 'Please choose country';
     errors.set('country', 'Please choose country');
-    // invalidMessage();
   } else {
-    // validField();
     let infoUserCountry = document.getElementById('userInfoCountry');
-    infoUserCountry.textContent = `country ${countrySelectValue}`;
+    //   infoUserCountry.textContent = `country ${countrySelectValue}`;
+    infoUserCountry.innerHTML = `<p>Country</p><span class="user-info__value">${countrySelectValue}</span>`;
+
     if (errors.has('country')) {
       errors.delete('country');
     }
   }
-  /* робочий варіант по індексу
 
-   let countrySelectIndex = countrySelect.selectedIndex;
-  if (countrySelectIndex === 0) {
-    mistakeText = 'you dont choose contry';
-    invalidMessage();
-  } else if (countrySelectIndex === 3) {
-    alert('Русский корабль иди .. you are blocked ');
-  } else {
-    console.log('cool,you choose country');
-    validField();
-  }
- */
   let genderRadio = userForm.elements.gender;
   let genderRadioMaleChecked = genderRadio[0].checked;
   let genderRadioFemaleChecked = genderRadio[1].checked;
   let genderRadioValue;
   let infoUserGender = document.getElementById('userInfoGender');
-  /*
-  if (genderRadioFemaleChecked || genderRadioMaleChecked) {
-    console.log('yes');
-  } else {
-    console.log('no');
-  } */
-  if (genderRadioFemaleChecked === true) {
-    // validField();
 
+  if (genderRadioFemaleChecked === true) {
     genderRadioValue = genderRadio[1].value;
-    infoUserGender.textContent = `Name ${genderRadioValue}`;
+    //infoUserGender.textContent = `Gender ${genderRadioValue}`;
+    infoUserGender.innerHTML = `<p>Gender</p><span class="user-info__value">${genderRadioValue}</span>`;
+
     if (errors.has('gender')) {
       errors.delete('gender');
     }
   } else if (genderRadioMaleChecked === true) {
-    // validField();
     genderRadioValue = genderRadio[0].value;
-    infoUserGender.textContent = `Name ${genderRadioValue}`;
+    // infoUserGender.textContent = `Gender ${genderRadioValue}`;
+    infoUserGender.innerHTML = `<p>Gender</p><span class="user-info__value">${genderRadioValue}</span>`;
+
     if (errors.has('gender')) {
       errors.delete('gender');
     }
   } else {
-    mistakeText = 'Please choose gender';
+    //   mistakeText = 'Please choose gender';
     errors.set('gender', 'Please choose gender');
-    // invalidMessage();
   }
 
   let userFormAgeValue = userForm.elements.age.value;
-  console.log(userFormAgeValue);
   const isValidAge = getAgeValidity(Number(userFormAgeValue));
   if (isValidAge) {
-    // validField();
     let infoUserAge = document.getElementById('userInfoAge');
-    infoUserAge.textContent = `Age ${userFormAgeValue}`;
+    //    infoUserAge.textContent = `Age ${userFormAgeValue}`;
+    infoUserAge.innerHTML = `<p>Age</p><span class="user-info__value">${userFormAgeValue}</span>`;
     if (errors.has('age')) {
       errors.delete('age');
     }
-  } /* else if (userFormAgeValue === '') {
-    console.log('empty string for number');
-  }  */ else {
-    mistakeText = 'please enter number to age field';
+  } else {
+    //  mistakeText = 'please enter number to age field';
     errors.set('age', 'please enter number to age field');
-    // invalidMessage();
   }
 
   let nameText = userForm.elements.name;
   let nameTextValue = nameText.value;
   const isValidName = nameTextValue && /^[a-z]+$/.test(nameTextValue);
+
   if (isValidName) {
     if (errors.has('name')) {
       errors.delete('name');
     }
+    let infoUserName = document.getElementById('userInfoName');
+    // infoUserName.textContent = `${nameTextValue}`;
+    infoUserName.innerHTML = `<p>Name</p><span class="user-info__value">${nameTextValue}</span>`;
   } else {
     errors.set('name', 'Please fill name input');
   }
