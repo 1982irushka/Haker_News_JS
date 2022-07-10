@@ -21,7 +21,10 @@ const newsFetch = fetch(
 );
 
 newsFetch // Promise
-  .then((response) => response.json())
+  .then((response) => {
+    const promiseZDanimi = response.json();
+    return promiseZDanimi;
+  })
   .then((ids) => {
     const newsIds = ids.slice(0, 5); //повертає масив з перших 5 id
     const calls = newsIds.map(
@@ -35,8 +38,9 @@ newsFetch // Promise
   })
   .then((responses) => Promise.all(responses.map((rsp) => rsp.json())))
   .then((pyatNovin) => {
+    const promiseZNovinami = Promise.resolve(pyatNovin);
     return Promise.all([
-      Promise.resolve(pyatNovin),
+      promiseZNovinami,
       ...pyatNovin.reduce(
         //reduce метод що повертає з масиву одне значення де acc попереднє значення а kids поточне значення
         (acc, { kids }) => [
@@ -45,10 +49,10 @@ newsFetch // Promise
             .slice(0, 4) //у кожного kids(поточне значення) метод slice вибирає 4 перші елементти і повертає масив елементів.
             .map(
               (
-                id // map до кожного елементу масиву зі значенням ключа id застосовує фетч
+                idComment // map до кожного елементу масиву зі значенням ключа id застосовує фетч
               ) =>
                 fetch(
-                  `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+                  `https://hacker-news.firebaseio.com/v0/item/${idComment}.json?print=pretty`
                 )
             ),
         ],
@@ -56,16 +60,15 @@ newsFetch // Promise
       ),
     ]);
   })
-  .then(
-    (
-      [news, ...commentsResponses] //commResp masyv obj response z masyvu promisiv
-    ) =>
-      Promise.all([
-        //maryv promisiv
-        Promise.resolve(news), //promis yakya resolvytsya masyvom novyn
-        ...commentsResponses.map((commentsRsp) => commentsRsp.json()),
-      ])
-  )
+  .then(function (
+    [news, ...commentsResponses] //commResp masyv obj response z masyvu promisiv
+  ) {
+    return Promise.all([
+      //maryv promisiv
+      Promise.resolve(news), //promis yakya resolvytsya masyvom novyn
+      ...commentsResponses.map((commentsRsp) => commentsRsp.json()),
+    ]);
+  })
   .then(([news, ...comments]) => {
     //news це масив і comments це масив
     const newsHtml = news.reduce((acc, newsObj) => {
@@ -83,20 +86,21 @@ newsFetch // Promise
 
       const commentsHtml = comments //масив comments.filter повертає масив з id
         .filter(({ id }) => kids.slice(0, 4).includes(id)) //kids.slice повертає масив з перших 4 елементів kids в яких є ключ id
-        .reduce((accom, commObj) => {
-          // до масиву метод reduce(accom - попереднє значення, comm Obj поточне)
-          const { by: byComm, text: textComm, time: timeComm } = commObj; //деструктирізація обєкта commOb під час якої змінні - ключі перейменовуються
-          return `${accom}
-      <li class="comments-list__item">
-        <article class="comments">
-          <p>
-            <span>${byComm}</span>
-            <span>${timeComm}</span>
-          </p>
-          <p class="comments__content">${textComm}</p>
-          </article>
-      </li>`;
-        }, '');
+        .reduce(
+          (accom, { by, text, time }) => `
+            ${accom}
+            <li class="comments-list__item">
+              <article class="comments">
+                <p>
+                  <span>${by}</span>
+                  <span>${time}</span>
+                </p>
+                <p class="comments__content">${text}</p>
+                </article>
+            </li>
+          `,
+          ''
+        );
 
       const { hostname = null } = url ? new URL(url) : {};
       const heading = `<h2 class="generic-list__content">${titleNews}</h2>`;
