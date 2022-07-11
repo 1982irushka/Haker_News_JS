@@ -26,55 +26,61 @@ newsFetch // Promise
     return promiseZDanimi;
   })
   .then((ids) => {
-    const newsIds = ids.slice(0, 5); //повертає масив з перших 5 id
+    //ids масив чисел з усіма  id новир
+    const newsIds = ids.slice(0, 5); //масив чисел, 5 перших id новин
     const calls = newsIds.map(
-      //з масиву newsIds*(перші 5 id) беруться значення id, кожен підставляється в посилання до якого застосовується fetch. Результат методу - масив з 5 промісів записані в змінну calls
+      //calls масив 5 промісів
       (id) =>
         fetch(
           `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
         )
     );
-    return Promise.all(calls); //повертає masiv responsiv z виконнання 5 фетчів
+    return Promise.all(calls); //резолвить масив з 5 промісів
   })
   .then((responses) => Promise.all(responses.map((rsp) => rsp.json())))
   .then((pyatNovin) => {
+    //pyatNovyn масив 5 обємктів
     const promiseZNovinami = Promise.resolve(pyatNovin);
     return Promise.all([
       promiseZNovinami,
       ...pyatNovin.reduce(
-        //reduce метод що повертає з масиву одне значення де acc попереднє значення а kids поточне значення
+        //...pyatNovin деструкція обєкту 5 новин
+        // метод reduce приймає аргументом1 функцію. аргумент2 пустий масив в перші ітерації
         (acc, { kids }) => [
-          ...acc,
-          ...kids
-            .slice(0, 4) //у кожного kids(поточне значення) метод slice вибирає 4 перші елементти і повертає масив елементів.
+          //{kids} деструкція обєкту з проперті kids
+          ...acc, // згорнутий масиву аккамулятор
+          ...kids // згорнутий масив коментарів, число
+            .slice(0, 4) // відсікання перших чотирьох коментарів,число
             .map(
               (
-                idComment // map до кожного елементу масиву зі значенням ключа id застосовує фетч
+                idComment // кожне число передається в фетч
               ) =>
                 fetch(
                   `https://hacker-news.firebaseio.com/v0/item/${idComment}.json?print=pretty`
                 )
             ),
         ],
-        []
+        [] // другий аргумент метода reduce
       ),
     ]);
   })
   .then(function (
-    [news, ...commentsResponses] //commResp masyv obj response z masyvu promisiv
+    [news, ...commentsResponses] //news масив 5 обєктів новив ...commentsResponses - згорнутий масив решти респонсів(коментарів)
   ) {
     return Promise.all([
-      //maryv promisiv
-      Promise.resolve(news), //promis yakya resolvytsya masyvom novyn
-      ...commentsResponses.map((commentsRsp) => commentsRsp.json()),
+      Promise.resolve(news), //resolve масиву з 5 обєтів новин (скорочений запис без фунціоналу)
+      ...commentsResponses.map((commentsRsp) => commentsRsp.json()), // почергово з кожного елементу масиву респонсів отримується масив проміс
     ]);
   })
   .then(([news, ...comments]) => {
-    //news це масив і comments це масив
+    //функція з параметром з масивів news(5 обєктів новин) і
+    // і згорнутого масиву обєктів коментарів comments
+    //тіло функції складається з reduce з першим аргументов функцією і другим аргументов пустий рядок
+
     const newsHtml = news.reduce((acc, newsObj) => {
-      // до масиву news застосвується метод reduce де асс попереднэ значення а newsObj поточне. Результат (одне значення) записано в змінну newsHtml
       const {
-        //деструкція поточного значення newsObj(5 обєктів). результат 7 змінних зі значеннями
+        //деструкці обєкту новин newsObj.
+        //в змінні записуються дані з відповідних проперті обєкта
         by,
         descendants,
         time,
@@ -84,10 +90,14 @@ newsFetch // Promise
         kids,
       } = newsObj;
 
-      const commentsHtml = comments //масив comments.filter повертає масив з id
-        .filter(({ id }) => kids.slice(0, 4).includes(id)) //kids.slice повертає масив з перших 4 елементів kids в яких є ключ id
+      const commentsHtml = comments //до масиву коментів comments метод filter
+        //параметер функції {id} - деструкція обєкту коментаря по проперті id
+        .filter(({ id }) => kids.slice(0, 4).includes(id)) // з масиву чисел вибирається перші чотири. і в них шукає чи є проперті id.формується новий масив коментарів
         .reduce(
-          (accom, { by, text, time }) => `
+          //до отриманаго масив коментарів reduce. перший аргумент функція. другий пустий рядок
+          // // { by, text, time } деструкція обєкту комментаря по відповідним проперті
+          // тіло функції - формуєтся html з підставлянням змінних в наслідок деструції
+          (accom, { by, text, time }) => `  
             ${accom}
             <li class="comments-list__item">
               <article class="comments">
@@ -124,6 +134,7 @@ newsFetch // Promise
         <ul class="generic-list generic-list--hidden comments-list">${commentsHtml}</ul>
            </li>`;
     }, '');
+
     const newsList = document.getElementById('news-list');
     newsList.innerHTML = newsHtml;
     const commentsList = document.getElementsByClassName('comments-list');
