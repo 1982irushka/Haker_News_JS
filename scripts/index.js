@@ -15,72 +15,100 @@ function getAgeValidity(value) {
   const isNumber = !Number.isNaN(value) && typeof value === 'number';
   return isNumber && Number(value) > 0;
 }
+/* 
+async function getNews() {
+  const ids = await fetch(
+    'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty'
+  );
+  const allNewsIds = await ids.json();
+  console.log('ids', ids);
+  console.log('allNewsIds', allNewsIds);
 
-const newsFetch = fetch(
+  const newsFiveIds = allNewsIds.slice(0, 5);
+  console.log('newsFiveIds', newsFiveIds);
+  const fivePromises = newsFiveIds.map((id) =>
+    fetch(`https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`)
+  );
+  console.log('fivePromises', fivePromises);
+
+  const newsFiveData = await fivePromises.map((response) => response.json());
+
+  console.log('newsFiveData', newsFiveData);
+  
+}
+
+getNews(); */
+
+///////asynk await ver
+/* 
+inet ver
+async function getNewsComments() {
+  const ids = await (
+    await fetch(
+      'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty'
+    )
+  ).json();
+  const newsIdsFour = ids.slice(0, 5);
+  const newsDataFivePromises = //newsDataFour маси 5промісів
+    newsIdsFour.map(
+      async (id) =>
+        await (
+          await fetch(
+            `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+          )
+        ).json()
+    );
+  const pyatNovin = await Promise.all(newsDataFivePromises); // 5 новин
+  console.log('pyatNovin', pyatNovin);
+
+}
+getNewsComments(); */
+/////////////////////////////////////////////THEN ver
+
+const newsAllPromise = fetch(
   'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty'
 );
-
-newsFetch // Promise
-  .then((response) => {
-    const promiseZDanimi = response.json();
-    return promiseZDanimi;
-  })
-  .then((ids) => {
-    //ids масив чисел з усіма  id новир
-    const newsIds = ids.slice(0, 5); //масив чисел, 5 перших id новин
-    const calls = newsIds.map(
-      //calls масив 5 промісів
-      (id) =>
-        fetch(
-          `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
-        )
+newsAllPromise
+  .then((responses) => responses.json())
+  .then((newsAllIds) => {
+    const newsIdsFour = newsAllIds.slice(0, 4);
+    const newsPromisesFour = newsIdsFour.map((id) =>
+      fetch(
+        `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+      )
     );
-    return Promise.all(calls); //резолвить масив з 5 промісів
+    return Promise.all(newsPromisesFour);
   })
-  .then((responses) => Promise.all(responses.map((rsp) => rsp.json())))
-  .then((pyatNovin) => {
-    //pyatNovyn масив 5 обємктів
-    const promiseZNovinami = Promise.resolve(pyatNovin);
+  .then((responses) => {
+    return Promise.all(responses.map((response) => response.json()));
+  })
+  .then((newsFourData) => {
     return Promise.all([
-      promiseZNovinami,
-      ...pyatNovin.reduce(
-        //...pyatNovin деструкція обєкту 5 новин
-        // метод reduce приймає аргументом1 функцію. аргумент2 пустий масив в перші ітерації
-        (acc, { kids }) => [
-          //{kids} деструкція обєкту з проперті kids
-          ...acc, // згорнутий масиву аккамулятор
-          ...kids // згорнутий масив коментарів, число
-            .slice(0, 4) // відсікання перших чотирьох коментарів,число
-            .map(
-              (
-                idComment // кожне число передається в фетч
-              ) =>
-                fetch(
-                  `https://hacker-news.firebaseio.com/v0/item/${idComment}.json?print=pretty`
-                )
+      Promise.resolve(newsFourData),
+      ...newsFourData.reduce(
+        (accomulator, { kids }) => [
+          ...accomulator,
+          ...kids
+            .slice(0, 4)
+            .map((id) =>
+              fetch(
+                `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
+              )
             ),
         ],
-        [] // другий аргумент метода reduce
+        []
       ),
     ]);
   })
-  .then(function (
-    [news, ...commentsResponses] //news масив 5 обєктів новив ...commentsResponses - згорнутий масив решти респонсів(коментарів)
-  ) {
+  .then(([newsFourData, ...commentsResp]) => {
     return Promise.all([
-      Promise.resolve(news), //resolve масиву з 5 обєтів новин (скорочений запис без фунціоналу)
-      ...commentsResponses.map((commentsRsp) => commentsRsp.json()), // почергово з кожного елементу масиву респонсів отримується масив проміс
+      Promise.resolve(newsFourData),
+      ...commentsResp.map((responses) => responses.json()),
     ]);
   })
-  .then(([news, ...comments]) => {
-    //функція з параметром з масивів news(5 обєктів новин) і
-    // і згорнутого масиву обєктів коментарів comments
-    //тіло функції складається з reduce з першим аргументов функцією і другим аргументов пустий рядок
-
-    const newsHtml = news.reduce((acc, newsObj) => {
+  .then(([newsFourData, ...comments]) => {
+    const newsHtml = newsFourData.reduce((accom, newsOne) => {
       const {
-        //деструкці обєкту новин newsObj.
-        //в змінні записуються дані з відповідних проперті обєкта
         by,
         descendants,
         time,
@@ -88,53 +116,54 @@ newsFetch // Promise
         score,
         url,
         kids,
-      } = newsObj;
+      } = newsOne;
 
-      const commentsHtml = comments //до масиву коментів comments метод filter
-        //параметер функції {id} - деструкція обєкту коментаря по проперті id
-        .filter(({ id }) => kids.slice(0, 4).includes(id)) // з масиву чисел вибирається перші чотири. і в них шукає чи є проперті id.формується новий масив коментарів
+      const commentsHtml = comments
+        .filter(({ id }) => kids.slice(0, 4).includes(id))
         .reduce(
-          //до отриманаго масив коментарів reduce. перший аргумент функція. другий пустий рядок
-          // // { by, text, time } деструкція обєкту комментаря по відповідним проперті
-          // тіло функції - формуєтся html з підставлянням змінних в наслідок деструції
-          (accom, { by, text, time }) => `  
-            ${accom}
-            <li class="comments-list__item">
-              <article class="comments">
-                <p>
-                  <span>${by}</span>
-                  <span>${time}</span>
-                </p>
-                <p class="comments__content">${text}</p>
-                </article>
-            </li>
-          `,
+          (acc, { id, text, time }) => ` ${acc} 
+        <li class="generic-list__item">
+           <article class="generic-list__content">
+             <p class="generic-list__detail">
+               <span>${by}</span>
+               <span>${time}</span>
+             </p>
+             <p>${text}</p>
+             </article>
+         </li>`,
           ''
         );
+      // const { hostname = null } = url ? new URL(url) : {};
+      const newsUrl = url ? new URL(url) : {};
+      //      якщо  url (змінна з деструкції newsOne) true то повертається url
+      //а якщо ні то пустий об'єкт
+      const { hostname = null } = newsUrl;
 
-      const { hostname = null } = url ? new URL(url) : {};
-      const heading = `<h2 class="generic-list__content">${titleNews}</h2>`;
+      //деструкція обєкта.якщлв обєкті newsUrl для проперті hostname значення немає
+      // то виводиться null
+      const heading = `<h2 class="generic-list__title">${titleNews}</h2>`;
       const headingWithLink = `<a href="${url}">${heading}</a>`;
       const source = url && hostname ? `<a href="${url}">${hostname}</a>` : '';
-
-      return `${acc}
-      <li class="generic-list__item">
-        <article class="news">
-          <div class="generic-list__title">
-            ${hostname ? headingWithLink : heading}
-            ${source}
-          </div>
-          <p>
-            <span>${descendants}</span> points by
-            <span>${by}</span>
-            <span>${time}</span> | <!-- timestamp to readable date -->
-            <button class="generic-list__show-comments">${score} comments</button>
-          </p>
-        </article>
-        <ul class="generic-list generic-list--hidden comments-list">${commentsHtml}</ul>
-           </li>`;
+      // якщо url і hostname true тоді повертається <a> а якщо faulse тоді пустий рядок.
+      return `${accom}
+        <li class="generic-list__item">
+          <article class="news">
+            <div class="generic-list__news-header">
+              <h2 class="generic-list__news-title">${
+                hostname ? headingWithLink : heading
+              }</h2>
+              ${source}
+            </div>
+            <p>
+              <span>${descendants}</span> points by
+              <span>${by}</span>
+              <span>${time}</span> | <!-- timestamp to readable date -->
+              <button class="generic-list__show-comments">${score} comments</button>
+            </p>
+          </article>
+          <ul class="generic-list generic-list--hidden comments-list">${commentsHtml}</ul>
+             </li>`;
     }, '');
-
     const newsList = document.getElementById('news-list');
     newsList.innerHTML = newsHtml;
     const commentsList = document.getElementsByClassName('comments-list');
@@ -150,7 +179,9 @@ newsFetch // Promise
       });
     });
   });
-//////////////////////////////////////////
+
+////////////
+
 let userForm = document.forms.user;
 
 userForm.onsubmit = function (event) {
@@ -158,20 +189,15 @@ userForm.onsubmit = function (event) {
 
   const errors = new Map();
 
-  //let mistakeText;
-
   let countrySelect = userForm.elements.country;
 
   let countrySelectValue = countrySelect.value;
 
   if (countrySelectValue === '') {
-    //  mistakeText = 'Please choose country';
     errors.set('country', 'Please choose country');
   } else {
     let infoUserCountry = document.getElementById('userInfoCountry');
-    //   infoUserCountry.textContent = `country ${countrySelectValue}`;
     infoUserCountry.innerHTML = `<p>Country</p><span class="user-info__value">${countrySelectValue}</span>`;
-
     if (errors.has('country')) {
       errors.delete('country');
     }
@@ -185,7 +211,6 @@ userForm.onsubmit = function (event) {
 
   if (genderRadioFemaleChecked === true) {
     genderRadioValue = genderRadio[1].value;
-    //infoUserGender.textContent = `Gender ${genderRadioValue}`;
     infoUserGender.innerHTML = `<p>Gender</p><span class="user-info__value">${genderRadioValue}</span>`;
 
     if (errors.has('gender')) {
@@ -193,14 +218,12 @@ userForm.onsubmit = function (event) {
     }
   } else if (genderRadioMaleChecked === true) {
     genderRadioValue = genderRadio[0].value;
-    // infoUserGender.textContent = `Gender ${genderRadioValue}`;
     infoUserGender.innerHTML = `<p>Gender</p><span class="user-info__value">${genderRadioValue}</span>`;
 
     if (errors.has('gender')) {
       errors.delete('gender');
     }
   } else {
-    //   mistakeText = 'Please choose gender';
     errors.set('gender', 'Please choose gender');
   }
 
@@ -208,13 +231,11 @@ userForm.onsubmit = function (event) {
   const isValidAge = getAgeValidity(Number(userFormAgeValue));
   if (isValidAge) {
     let infoUserAge = document.getElementById('userInfoAge');
-    //    infoUserAge.textContent = `Age ${userFormAgeValue}`;
     infoUserAge.innerHTML = `<p>Age</p><span class="user-info__value">${userFormAgeValue}</span>`;
     if (errors.has('age')) {
       errors.delete('age');
     }
   } else {
-    //  mistakeText = 'please enter number to age field';
     errors.set('age', 'please enter number to age field');
   }
 
@@ -227,7 +248,6 @@ userForm.onsubmit = function (event) {
       errors.delete('name');
     }
     let infoUserName = document.getElementById('userInfoName');
-    // infoUserName.textContent = `${nameTextValue}`;
     infoUserName.innerHTML = `<p>Name</p><span class="user-info__value">${nameTextValue}</span>`;
   } else {
     errors.set('name', 'Please fill name input');
