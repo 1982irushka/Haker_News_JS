@@ -116,10 +116,9 @@ newsAllPromise
     );
     Array.from(commentsButtons).forEach((button) => {
       button.addEventListener('click', () => {
-        hideCommentsLists(commentsList);
         const li = button.closest('.generic-list__item');
         const [ul] = Array.from(li.getElementsByClassName('comments-list'));
-        ul.classList.remove('generic-list--hidden');
+        ul.classList.toggle('generic-list--hidden');
       });
     });
   });

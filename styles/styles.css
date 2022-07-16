@@ -14,7 +14,7 @@ body {
   align-items: center;
   flex-direction: column;
   width: 100%;
-
+background-color: blue;
   color: #828282;
   font-size: 8pt;
   font-family: Verdana, Geneva, sans-serif;
