@@ -4,12 +4,6 @@ import { News } from './modules/news.js';
 News();
 formUser();
 
-function hideCommentsLists(list) {
-  Array.from(list)
-    .filter((item) => !item.classList.contains('generic-list--hidden'))
-    .forEach((item) => item.classList.add('generic-list--hidden'));
-}
-
 function getAgeValidity(value) {
   const isNumber = !Number.isNaN(value) && typeof value === 'number';
   return isNumber && Number(value) > 0;
@@ -21,21 +15,21 @@ const newsAllPromise = fetch(
 newsAllPromise
   .then((responses) => responses.json())
   .then((newsAllIds) => {
-    const newsIdsFour = newsAllIds.slice(0, 4);
-    const newsPromisesFour = newsIdsFour.map((id) =>
+    const newsIdsSlice = newsAllIds.slice(0, 5);
+    const newsPromisesFive = newsIdsSlice.map((id) =>
       fetch(
         `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
       )
     );
-    return Promise.all(newsPromisesFour);
+    return Promise.all(newsPromisesFive);
   })
-  .then((responses) => {
-    return Promise.all(responses.map((response) => response.json()));
-  })
-  .then((newsFourData) => {
-    return Promise.all([
-      Promise.resolve(newsFourData),
-      ...newsFourData.reduce(
+  .then((responses) =>
+    Promise.all(responses.map((response) => response.json()))
+  )
+  .then((newsData) =>
+    Promise.all([
+      Promise.resolve(newsData),
+      ...newsData.reduce(
         (accomulator, { kids }) => [
           ...accomulator,
           ...kids
@@ -48,21 +42,21 @@ newsAllPromise
         ],
         []
       ),
-    ]);
-  })
-  .then(([newsFourData, ...commentsResp]) => {
-    return Promise.all([
-      Promise.resolve(newsFourData),
-      ...commentsResp.map((responses) => responses.json()),
-    ]);
-  })
-  .then(([newsFourData, ...comments]) => {
-    const newsHtml = newsFourData.reduce((accom, newsOne) => {
+    ])
+  )
+  .then(([newsData, ...commentsResponses]) =>
+    Promise.all([
+      Promise.resolve(newsData),
+      ...commentsResponses.map((responses) => responses.json()),
+    ])
+  )
+  .then(([newsData, ...comments]) => {
+    const newsHtml = newsData.reduce((accom, newsOne) => {
       const {
         by,
         descendants,
-        time: titleTime,
-        title: titleNews,
+        time: newsTime,
+        title: newsTitle,
         score,
         url,
         kids,
@@ -85,7 +79,7 @@ newsAllPromise
         );
       const newsUrl = url ? new URL(url) : {};
       const { hostname = null } = newsUrl;
-      const heading = `<h2 class="generic-list__title">${titleNews}</h2>`;
+      const heading = `<h2 class="generic-list__title">${newsTitle}</h2>`;
       const headingWithLink = `<a href="${url}">${heading}</a>`;
       const source = url && hostname ? `<a href="${url}">${hostname}</a>` : '';
 
@@ -101,7 +95,7 @@ newsAllPromise
             <p>
               <span>${descendants}</span> points by
               <span>${by}</span>
-              <span>${titleTime}</span> | <!-- timestamp to readable date -->
+              <span>${newsTime}</span> | <!-- timestamp to readable date -->
               <button class="generic-list__show-comments">${score} comments</button>
             </p>
           </article>
@@ -110,7 +104,7 @@ newsAllPromise
     }, '');
     const newsList = document.getElementById('news-list');
     newsList.innerHTML = newsHtml;
-    const commentsList = document.getElementsByClassName('comments-list');
+
     const commentsButtons = document.getElementsByClassName(
       'generic-list__show-comments'
     );
@@ -123,6 +117,7 @@ newsAllPromise
     });
   });
 
+// validation login form
 const userForm = document.forms.user;
 
 userForm.onsubmit = function validationForm(event) {
@@ -147,6 +142,7 @@ userForm.onsubmit = function validationForm(event) {
   const genderRadio = userForm.elements.gender;
   const genderRadioMaleChecked = genderRadio[0].checked;
   const genderRadioFemaleChecked = genderRadio[1].checked;
+
   let genderRadioValue;
   const infoUserGender = document.getElementById('userInfoGender');
 
@@ -193,11 +189,6 @@ userForm.onsubmit = function validationForm(event) {
   } else {
     errors.set('name', 'Please fill name input');
   }
-  /* 
-  invalidMessage(errors);
-  if (errors.size === 0) {
-    validField(errors);
-  } */
 
   function invalidMessage(mapOfErrors) {
     const formMistake = document.getElementById('formMistake');
@@ -207,11 +198,6 @@ userForm.onsubmit = function validationForm(event) {
     });
     formMistake.innerHTML = errorMgs;
   }
-  /* 
-  invalidMessage(errors);
-  if (errors.size === 0) {
-    validField(errors);
-  } */
 
   function validField() {
     const userInformation = document.getElementById('userInfo');
