@@ -162,7 +162,7 @@ body {
   padding: 10px;
 }
 
-.form__item {
+.form__control {
   margin: 3px 0;
   height: 30px;
   align-items: center;
@@ -184,13 +184,18 @@ body {
   border: 1px solid rgb (128, 128, 128);
 }
 
-.form__input {
+.field__input {
   height: 25px;
 }
 
-.form__title {
+.field__title {
   font-size: 16px;
   color: #000;
+}
+
+.radio__input {
+  width: 20px;
+  height: 20px;
 }
 
 .form__mistake {

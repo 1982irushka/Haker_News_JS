@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/styles.css" />
-    <script type="module" src="scripts/index.js"></script>
+    <script src="scripts/index.js"></script>
     <title>Haker_news_JS</title>
   </head>
   <body>
@@ -12,7 +12,8 @@
       <header class="container__header">
         <div class="logo">
           <div class="logo__image">
-            <img src="images/logo.gif" alt="logo"/></div>
+            <img src="images/logo.gif" alt="logo"/>
+          </div>
           <h1 class="logo__title">Hacker News</h1>
         </div>
       </header>
@@ -25,31 +26,36 @@
           <form class="form" name="user">
             <h2 class="form__title">Login form</h2>
             <ul id="formMistake" class="form__mistake">   </ul>
-            <div class="form__item">
-            <p class="form__title">User name</p>
-            <input type="text" class="form__input" placeholder="name" name="name">
+            <div class="form__control field">
+                <label for="nameField" class="field__title">User name</label>
+                <input id="nameField" type="text" class="field__input" placeholder="name" name="name">
+              </div>
+            <div class="form__control field">
+              <label  class="field__title">Gender
+              </label>
+              <div id="genderField" class="form__radio radio">
+                <input class="radio__input" type="radio" id="genderMale"
+                  name="gender" value="Male" >
+                  <label for="genderMale">Male</label>
+                  <input type="radio" class="radio__input" id="genderFemale"
+                name="gender" value="Female" >
+                <label for="genderFemale">Female</label>
+              </div>
+          </div>
+            <div class="form__control field">
+              <label for="ageField" class="field__title">Age</label>
+              <input id="ageField" class="field__input" type="number" name="age">
             </div>
-            <div class="form__item">
-              <p class="form__title">Gender</p>
-              <div class="form__radio">
-              <input class="form__input" type="radio" id="genderMale"
-                name="gender" value="Male" >
-                <label for="genderMale">Male</label>
-                <input type="radio" id="genderFemale"
-               name="gender" value="Female" >
-              <label for="genderFemale">Female</label>
-            </div></div>
-            <div class="form__item">
-              <p class="form__title">Age</p>
-              <input id="ageField" class="form__input" type="number" name="age">
-            </div>
-            <div class="form__item">
-              <p class="form__title">Country</p>
-              <select id="select" class="form__input" name="country">
+            <div class="form__control field">
+              <label for="select" class="field__title">Country </label>
+              <select id="select" class="field__input" name="country">
                 <option value=""></option>
                 <option value="Ukraine">Ukraine</option>
                 <option value="Poland">Poland</option>
+                <option value="Canada">Canada</option>
+                <option value="USA">USA</option>
               </select>
+           
             </div>
               <button id="submitBtn" class="form__button" type="submit">Відправити</button>
         </form>
