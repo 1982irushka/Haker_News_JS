@@ -7,6 +7,7 @@
   "scripts": {
     "stylelint": "stylelint \"**/*.css\"",
     "lint": "eslint --cache --cache-location node_modules/.cache/eslint",
+    "lint:css": "npm run stylelint",
     "prettier": "prettier \"**/*.{svg,js,html,css,json}\" --write --cache node_modules/.cache/prettier",
     "exec": "node index.js",
     "server": "http-server",

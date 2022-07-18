@@ -196,7 +196,7 @@ userForm.onsubmit = function validationForm(event) {
   function validField() {
     const userInformation = document.getElementById('userInfo');
     userForm.style.display = 'none';
-    userInformation.style.display = 'block';
+    userInformation.style.display = 'flex';
   }
 
   invalidMessage(errors);
