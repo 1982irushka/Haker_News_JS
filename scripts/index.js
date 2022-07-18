@@ -24,8 +24,8 @@ newsAllPromise
     Promise.all([
       Promise.resolve(newsData),
       ...newsData.reduce(
-        (accomulator, { kids }) => [
-          ...accomulator,
+        (accumulator, { kids }) => [
+          ...accumulator,
           ...kids
             .slice(0, 4)
             .map((id) =>
