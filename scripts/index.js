@@ -1,9 +1,3 @@
-import { formUser } from './modules/form.js';
-import { News } from './modules/news.js';
-
-News();
-formUser();
-
 function getAgeValidity(value) {
   const isNumber = !Number.isNaN(value) && typeof value === 'number';
   return isNumber && Number(value) > 0;
@@ -67,13 +61,13 @@ newsAllPromise
         .reduce(
           (acc, { text, time }) => ` ${acc} 
         <li class="generic-list__item">
-           <article class="generic-list__content">
-             <p class="generic-list__detail">
+           <article class="comment">
+             <p class="comment__info">
                <span>${by}</span>
                <span>${time}</span>
              </p>
-             <p>${text}</p>
-             </article>
+             <div>${text}</div>
+            </article>
          </li>`,
           ''
         );
