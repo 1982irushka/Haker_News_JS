@@ -185,12 +185,15 @@ userForm.onsubmit = function validationForm(event) {
   }
 
   function invalidMessage(mapOfErrors) {
-    const formMistake = document.getElementById('formMistake');
+    const formMistakeCreate = document.createElement('ul');
+    formMistakeCreate.className = 'form__mistake';
+    const formTitle = document.getElementById('loginFormTitle');
+    formTitle.after(formMistakeCreate);
     let errorMgs = '';
     mapOfErrors.forEach((value) => {
       errorMgs = `${errorMgs}<li class="form__mistake">${value}</li>`;
     });
-    formMistake.innerHTML = errorMgs;
+    formMistakeCreate.innerHTML = errorMgs;
   }
 
   function validField() {

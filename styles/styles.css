@@ -230,7 +230,7 @@ main {
 
 .form__mistake {
   font-size: 14px;
-  color: rgb (255, 0, 0);
+  color: red;
 }
 
 .form__radio {
