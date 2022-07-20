@@ -74,13 +74,6 @@ main {
 }
 
 .logo {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: auto;
-}
-
-.logo__title {
   color: #222;
   line-height: 12px;
   font-weight: bold;
@@ -90,7 +83,7 @@ main {
   align-items: center;
 }
 
-.logo__title::before {
+.logo::before {
   background-image: url('../images/logo.gif');
   background-repeat: no-repeat;
   background-size: contain;
@@ -100,14 +93,6 @@ main {
   display: inline-flex;
   content: '';
   border: 1px solid white;
-}
-
-.logo__image {
-  border: 1px solid white;
-  width: 18px;
-  height: 18px;
-  background-size: contain;
-  background-image: url('../images/logo.gif');
 }
 
 .menu__item {
