@@ -30,10 +30,16 @@ body {
 main {
   width: 85%;
   height: 100vh;
-  background: #f6f6ef;
+  background-color: #f6f6ef;
   display: flex;
   flex-direction: column;
   margin: 8px;
+}
+
+@media only screen and (min-width: 300px) and (max-width: 750px) {
+  main {
+    width: 100%;
+  }
 }
 
 .page {
@@ -58,12 +64,6 @@ main {
 .page__form {
   grid-column: 2;
   grid-row: 2;
-}
-
-@media only screen and (min-width: 300px) and (max-width: 750px) {
-  main {
-    width: 100%;
-  }
 }
 
 .top-panel {
