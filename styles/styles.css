@@ -183,7 +183,7 @@ main {
   margin: 0;
 }
 
-.form__button {
+.form__submit-btn {
   line-height: 30px;
   width: 80px;
   background-color: #f60;
@@ -192,7 +192,7 @@ main {
   border: 1px solid transparent;
 }
 
-.form__button:hover {
+.form__submit-btn:hover {
   border: 1px solid rgb (128, 128, 128);
 }
 
