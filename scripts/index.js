@@ -73,7 +73,7 @@ newsAllPromise
         );
       const newsUrl = url ? new URL(url) : {};
       const { hostname = null } = newsUrl;
-      const heading = `<h2 class="generic-list__title">${newsTitle}</h2>`;
+      const heading = `<h2  class="news__title news__title--inside">${newsTitle}</h2>`;
       const headingWithLink = `<a href="${url}">${heading}</a>`;
       const source = url && hostname ? `<a href="${url}">${hostname}</a>` : "";
 
@@ -81,7 +81,7 @@ newsAllPromise
         <li class="generic-list__item">
           <article class="news">
             <header class="news__header">
-              <h2 class="news__title">${
+              <h2  class="news__title">${
                 hostname ? headingWithLink : heading
               }</h2>
               ${source}
@@ -99,9 +99,7 @@ newsAllPromise
     const newsList = document.getElementById("news-list");
     newsList.innerHTML = newsHtml;
 
-    const commentsButtons = document.getElementsByClassName(
-      "generic-list__show-comments"
-    );
+    const commentsButtons = document.getElementsByClassName("show-comments");
     Array.from(commentsButtons).forEach((button) => {
       button.addEventListener("click", () => {
         const li = button.closest(".generic-list__item");
