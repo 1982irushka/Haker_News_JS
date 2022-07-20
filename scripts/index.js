@@ -186,12 +186,12 @@ userForm.onsubmit = function validationForm(event) {
 
   function invalidMessage(mapOfErrors) {
     const formMistakeCreate = document.createElement('ul');
-    formMistakeCreate.className = 'form__mistake';
+    formMistakeCreate.className = 'info-errors';
     const formTitle = document.getElementById('loginFormTitle');
     formTitle.after(formMistakeCreate);
     let errorMgs = '';
     mapOfErrors.forEach((value) => {
-      errorMgs = `${errorMgs}<li class="form__mistake">${value}</li>`;
+      errorMgs = `${errorMgs}<li class="info-errors__err">${value}</li>`;
     });
     formMistakeCreate.innerHTML = errorMgs;
   }

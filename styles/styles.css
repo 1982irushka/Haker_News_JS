@@ -213,7 +213,8 @@ main {
   height: 20px;
 }
 
-.form__mistake {
+.info-errors__err {
+  line-height: 20px;
   font-size: 14px;
   color: red;
 }
