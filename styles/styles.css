@@ -208,7 +208,7 @@ main {
   color: #000;
 }
 
-.radio__input {
+.field__input--radio {
   width: 20px;
   height: 20px;
 }
