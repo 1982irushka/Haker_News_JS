@@ -242,7 +242,7 @@ main {
   display: none;
 }
 
-.user-info__item {
+.user-info__label {
   margin: 3px 0;
   height: 30px;
   align-items: center;
