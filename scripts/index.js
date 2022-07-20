@@ -1,10 +1,10 @@
 function getAgeValidity(value) {
-  const isNumber = !Number.isNaN(value) && typeof value === "number";
+  const isNumber = !Number.isNaN(value) && typeof value === 'number';
   return isNumber && Number(value) > 0;
 }
 
 const newsAllPromise = fetch(
-  "https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty"
+  'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty'
 );
 newsAllPromise
   .then((responses) => responses.json())
@@ -59,7 +59,7 @@ newsAllPromise
       const commentsHtml = comments
         .filter(({ id }) => kids.slice(0, 4).includes(id))
         .reduce(
-          (acc, { text, time }) => ` ${acc} 
+          (acc, { text, time }) => ` ${acc}
         <li class="generic-list__item">
            <article class="comment">
              <p class="comment__info">
@@ -69,13 +69,13 @@ newsAllPromise
              <div>${text}</div>
             </article>
          </li>`,
-          ""
+          ''
         );
       const newsUrl = url ? new URL(url) : {};
       const { hostname = null } = newsUrl;
       const heading = `<h2  class="news__title news__title--inside">${newsTitle}</h2>`;
       const headingWithLink = `<a href="${url}">${heading}</a>`;
-      const source = url && hostname ? `<a href="${url}">${hostname}</a>` : "";
+      const source = url && hostname ? `<a href="${url}">${hostname}</a>` : '';
 
       return `${accom}
         <li class="generic-list__item">
@@ -95,16 +95,16 @@ newsAllPromise
           </article>
           <ul class="generic-list generic-list--hidden comments-list">${commentsHtml}</ul>
              </li>`;
-    }, "");
-    const newsList = document.getElementById("news-list");
+    }, '');
+    const newsList = document.getElementById('news-list');
     newsList.innerHTML = newsHtml;
 
-    const commentsButtons = document.getElementsByClassName("show-comments");
+    const commentsButtons = document.getElementsByClassName('show-comments');
     Array.from(commentsButtons).forEach((button) => {
-      button.addEventListener("click", () => {
-        const li = button.closest(".generic-list__item");
-        const [ul] = Array.from(li.getElementsByClassName("comments-list"));
-        ul.classList.toggle("generic-list--hidden");
+      button.addEventListener('click', () => {
+        const li = button.closest('.generic-list__item');
+        const [ul] = Array.from(li.getElementsByClassName('comments-list'));
+        ul.classList.toggle('generic-list--hidden');
       });
     });
   });
@@ -121,13 +121,13 @@ userForm.onsubmit = function validationForm(event) {
 
   const countrySelectValue = countrySelect.value;
 
-  if (countrySelectValue === "") {
-    errors.set("country", "Please choose country");
+  if (countrySelectValue === '') {
+    errors.set('country', 'Please choose country');
   } else {
-    const infoUserCountry = document.getElementById("userInfoCountry");
+    const infoUserCountry = document.getElementById('userInfoCountry');
     infoUserCountry.innerHTML = `<p>Country</p><span class="user-info__value">${countrySelectValue}</span>`;
-    if (errors.has("country")) {
-      errors.delete("country");
+    if (errors.has('country')) {
+      errors.delete('country');
     }
   }
 
@@ -136,36 +136,36 @@ userForm.onsubmit = function validationForm(event) {
   const genderRadioFemaleChecked = genderRadio[1].checked;
 
   let genderRadioValue;
-  const infoUserGender = document.getElementById("userInfoGender");
+  const infoUserGender = document.getElementById('userInfoGender');
 
   if (genderRadioFemaleChecked === true) {
     genderRadioValue = genderRadio[1].value;
     infoUserGender.innerHTML = `<p>Gender</p><span class="user-info__value">${genderRadioValue}</span>`;
 
-    if (errors.has("gender")) {
-      errors.delete("gender");
+    if (errors.has('gender')) {
+      errors.delete('gender');
     }
   } else if (genderRadioMaleChecked === true) {
     genderRadioValue = genderRadio[0].value;
     infoUserGender.innerHTML = `<p>Gender</p><span class="user-info__value">${genderRadioValue}</span>`;
 
-    if (errors.has("gender")) {
-      errors.delete("gender");
+    if (errors.has('gender')) {
+      errors.delete('gender');
     }
   } else {
-    errors.set("gender", "Please choose gender");
+    errors.set('gender', 'Please choose gender');
   }
 
   const userFormAgeValue = userForm.elements.age.value;
   const isValidAge = getAgeValidity(Number(userFormAgeValue));
   if (isValidAge) {
-    const infoUserAge = document.getElementById("userInfoAge");
+    const infoUserAge = document.getElementById('userInfoAge');
     infoUserAge.innerHTML = `<p>Age</p><span class="user-info__value">${userFormAgeValue}</span>`;
-    if (errors.has("age")) {
-      errors.delete("age");
+    if (errors.has('age')) {
+      errors.delete('age');
     }
   } else {
-    errors.set("age", "please enter number to age field");
+    errors.set('age', 'please enter number to age field');
   }
 
   const nameText = userForm.elements.name;
@@ -173,21 +173,24 @@ userForm.onsubmit = function validationForm(event) {
   const isValidName = nameTextValue && /^[a-z]+$/.test(nameTextValue);
 
   if (isValidName) {
-    if (errors.has("name")) {
-      errors.delete("name");
+    if (errors.has('name')) {
+      errors.delete('name');
     }
-    const infoUserName = document.getElementById("userInfoName");
+    const infoUserName = document.getElementById('userInfoName');
     infoUserName.innerHTML = `<p>Name</p><span class="user-info__value">${nameTextValue}</span>`;
   } else {
-    errors.set("name", "Please fill name input");
+    errors.set('name', 'Please fill name input');
   }
 
   function invalidMessage(mapOfErrors) {
-    const formMistakeCreate = document.createElement("ul");
-    formMistakeCreate.className = "info-errors";
-    const formTitle = document.getElementById("loginFormTitle");
+    const [infoErrors] = Array.from(
+      document.getElementsByClassName('info-errors')
+    );
+    const formMistakeCreate = infoErrors ?? document.createElement('ul');
+    formMistakeCreate.className = 'info-errors';
+    const formTitle = document.getElementById('loginFormTitle');
     formTitle.after(formMistakeCreate);
-    let errorMgs = "";
+    let errorMgs = '';
     mapOfErrors.forEach((value) => {
       errorMgs = `${errorMgs}<li class="info-errors__err">${value}</li>`;
     });
@@ -195,9 +198,9 @@ userForm.onsubmit = function validationForm(event) {
   }
 
   function validField() {
-    const userInformation = document.getElementById("userInfo");
-    userForm.style.display = "none";
-    userInformation.style.display = "flex";
+    const userInformation = document.getElementById('userInfo');
+    userForm.style.display = 'none';
+    userInformation.style.display = 'flex';
   }
 
   invalidMessage(errors);

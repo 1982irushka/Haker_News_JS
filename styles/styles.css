@@ -123,10 +123,15 @@ main {
   flex-direction: column;
   padding-left: 28px;
   margin: 0;
+  list-style-image: url("../images/arrow.gif");
 }
 
 .generic-list--hidden {
   display: none;
+}
+
+.generic-list--numeric {
+  list-style-image: none;
 }
 
 .show-comments {
@@ -147,7 +152,7 @@ main {
 }
 
 .generic-list__item::before {
-  width: 13px;
+  /* width: 13px;
   height: 13px;
   background-repeat: no-repeat;
   background-size: contain;
@@ -156,7 +161,7 @@ main {
   top: 2px;
   content: "";
   display: flex;
-  background-image: url("../images/arrow.gif");
+  background-image: url("../images/arrow.gif"); */
 }
 
 .generic-list__detail {
@@ -268,10 +273,6 @@ main {
 .comment {
   color: #000;
   font-size: 12px;
-}
-
-.comments-list {
-  list-style: none;
 }
 
 .comment__info {

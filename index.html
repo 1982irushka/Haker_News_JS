@@ -1,41 +1,62 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="styles/styles.css" />
-  <script defer src="scripts/index.js"></script>
-  <title>Haker_news_JS</title>
-</head>
-<body>
-  <main class="page">
-    <header class="page__header top-panel">      
-      <h1 class="logo">Hacker News</h1>
-      </header>    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <script defer src="scripts/index.js"></script>
+    <title>Haker_news_JS</title>
+  </head>
+  <body>
+    <main class="page">
+      <header class="page__header top-panel">
+        <h1 class="logo">Hacker News</h1>
+      </header>
       <section class="page__news">
-        <ol id="news-list" class="generic-list">
-        </ol>
+        <ol id="news-list" class="generic-list generic-list--numeric"></ol>
       </section>
       <aside class="page__form">
         <form class="form" name="user">
           <h2 id="loginFormTitle" class="form__title">Login form</h2>
-            <div class="field">
+          <div class="field">
             <label for="nameField" class="field__label">User name</label>
-            <input id="nameField" type="text" class="field__input" placeholder="name" name="name">
+            <input
+              id="nameField"
+              type="text"
+              class="field__input"
+              placeholder="name"
+              name="name"
+            />
           </div>
           <div class="field">
-            <label class="field__label">Gender
-            </label>
+            <label class="field__label">Gender </label>
             <div id="genderField" class="form__radio field">
-              <input class="field__input field__input--radio" type="radio" id="genderMale" name="gender" value="Male">
+              <input
+                class="field__input field__input--radio"
+                type="radio"
+                id="genderMale"
+                name="gender"
+                value="Male"
+              />
               <label for="genderMale">Male</label>
-              <input type="radio" class="field__input field__input--radio" id="genderFemale" name="gender" value="Female">
+              <input
+                type="radio"
+                class="field__input field__input--radio"
+                id="genderFemale"
+                name="gender"
+                value="Female"
+              />
               <label for="genderFemale">Female</label>
             </div>
           </div>
           <div class="field">
             <label for="ageField" class="field__label">Age</label>
-            <input id="ageField" class="field__input" type="number" name="age">
+            <input
+              id="ageField"
+              class="field__input"
+              type="number"
+              name="age"
+            />
           </div>
           <div class="field">
             <label for="select" class="field__label">Country </label>
@@ -46,9 +67,10 @@
               <option value="Canada">Canada</option>
               <option value="USA">USA</option>
             </select>
-
           </div>
-          <button id="submitBtn" class="form__submit-btn" type="submit">Відправити</button>
+          <button id="submitBtn" class="form__submit-btn" type="submit">
+            Відправити
+          </button>
         </form>
         <article id="userInfo" class="user-info">
           <h2 class="user-info__title">User</h2>
@@ -57,7 +79,7 @@
           <div id="userInfoGender" class="user-info__label"></div>
           <div id="userInfoCountry" class="user-info__label"></div>
         </article>
-      </aside>    
-  </main>
-</body>
+      </aside>
+    </main>
+  </body>
 </html>
