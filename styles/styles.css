@@ -1,5 +1,3 @@
-/* stylelint-disable no-missing-end-of-source-newline */
-
 a {
   text-decoration: none;
   color: inherit;
@@ -20,25 +18,20 @@ body {
   margin: 0;
 }
 
-main {
+.page {
   width: 85%;
   height: 100vh;
   background-color: #f6f6ef;
-  display: flex;
-  flex-direction: column;
   margin: 8px;
-}
-
-@media only screen and (min-width: 300px) and (max-width: 750px) {
-  main {
-    width: 100%;
-  }
-}
-
-.page {
   display: grid;
   grid-auto-rows: max-content auto;
   grid-template-columns: repeat(2, 1fr);
+}
+
+@media only screen and (min-width: 300px) and (max-width: 750px) {
+  .page {
+    width: 100%;
+  }
 }
 
 .page__header {
@@ -114,10 +107,6 @@ main {
   font-weight: normal;
 }
 
-.news__title-inside {
-  margin: 0;
-}
-
 .generic-list {
   display: flex;
   flex-direction: column;
@@ -149,19 +138,6 @@ main {
   position: relative;
   margin-bottom: 7px;
   padding-left: 8px;
-}
-
-.generic-list__item::before {
-  /* width: 13px;
-  height: 13px;
-  background-repeat: no-repeat;
-  background-size: contain;
-  position: absolute;
-  left: -5px;
-  top: 2px;
-  content: "";
-  display: flex;
-  background-image: url("../images/arrow.gif"); */
 }
 
 .generic-list__detail {
@@ -210,18 +186,23 @@ main {
   grid-template-rows: 1fr;
 }
 
-.field__input {
-  height: 25px;
+.field--radio {
+  display: flex;
+  align-items: center;
 }
 
-.field__label {
-  font-size: 16px;
-  color: #000;
+.field__input {
+  height: 25px;
 }
 
 .field__input--radio {
   width: 20px;
   height: 20px;
+}
+
+.field__label {
+  font-size: 16px;
+  color: #000;
 }
 
 .info-errors {
@@ -233,11 +214,6 @@ main {
   line-height: 20px;
   font-size: 14px;
   color: red;
-}
-
-.form__radio {
-  display: flex;
-  align-items: center;
 }
 
 .user-info {

@@ -73,8 +73,7 @@ newsAllPromise
         );
       const newsUrl = url ? new URL(url) : {};
       const { hostname = null } = newsUrl;
-      const heading = `<h2  class="news__title news__title--inside">${newsTitle}</h2>`;
-      const headingWithLink = `<a href="${url}">${heading}</a>`;
+      const headingWithLink = `<a href="${url}">${newsTitle}</a>`;
       const source = url && hostname ? `<a href="${url}">${hostname}</a>` : '';
 
       return `${accom}
@@ -82,7 +81,7 @@ newsAllPromise
           <article class="news">
             <header class="news__header">
               <h2  class="news__title">${
-                hostname ? headingWithLink : heading
+                hostname ? headingWithLink : newsTitle
               }</h2>
               ${source}
             </header>
