@@ -76,44 +76,32 @@ newsAllPromise
       const headingWithLink = `<a href="${url}">${newsTitle}</a>`;
       const source = url && hostname ? `<a href="${url}">${hostname}</a>` : '';
 
-      const prevTimeMS = new Date(newsTime).getTime();
-      const currentTimeMS = new Date().getTime();
-      const timeDifferenceMS = currentTimeMS - prevTimeMS;
-      const timeDifferenceRoundSec = Math.round(timeDifferenceMS / 1000);
-      const timeDifferenceRoundMin = Math.round(timeDifferenceMS / 1000 / 60);
-      const timeDifferenceRoundHour = Math.round(
-        timeDifferenceMS / 1000 / 60 / 60
-      );
-      const timeDifferenceRoundDay = Math.round(
-        timeDifferenceMS / 1000 / 60 / 60 / 24
-      );
-      /* 
-      const timeDifferenceSec = timeDifferenceMS / 1000;
-      const timeDifferenceMin = timeDifferenceSec / 60;
-      const timeDifferenceHour = timeDifferenceMin / 60;
-      const timeDifferenceDay = timeDifferenceHour / 24; */
-      /* 
-      const timeDifferenceRoundDay = Math.round(timeDifferenceDay);
-      const timeDifferenceRoundMin = Math.round(timeDifferenceMin);
-      const timeDifferenceRoundHour = Math.round(timeDifferenceHour); */
-      console.log('prevTimeMS', prevTimeMS);
-      console.log('currentTimeMS', currentTimeMS);
-      console.log('timeDifferenceMS', timeDifferenceMS); /* 
-      console.log('timeDifferenceSec', timeDifferenceSec);
-      console.log('timeDifferenceMin', timeDifferenceMin); */
-      console.log('timeDifferenceRoundMin', timeDifferenceRoundMin);
-      console.log('timeDifferenceRoundSec', timeDifferenceRoundSec);
-      console.log('timeDifferenceRoundDay', timeDifferenceRoundDay);
-      console.log('timeDifferenceRoundHour', timeDifferenceRoundHour);
-      if (timeDifferenceRoundMin < 60) {
-        newsTime = `${timeDifferenceRoundMin} min ago`;
-      } else if (timeDifferenceRoundHour >= 1 && timeDifferenceRoundHour < 24) {
-        newsTime = `${timeDifferenceRoundHour} hour ago`;
-      } else if (timeDifferenceRoundDay >= 1) {
-        newsTime = `${timeDifferenceRoundDay} days ago`;
-      } else {
-        console.log('mistake');
+      function timeParse() {
+        const prevTimeMS = new Date(newsTime).getTime();
+        const currentTimeMS = new Date().getTime();
+        const timeDifferenceMS = currentTimeMS - prevTimeMS; /* 
+        const timeDifferenceRoundSec = Math.round(timeDifferenceMS / 1000); */
+        const timeDifferenceRoundMin = Math.round(timeDifferenceMS / 1000 / 60);
+        const timeDifferenceRoundHour = Math.round(
+          timeDifferenceMS / 1000 / 60 / 60
+        );
+        const timeDifferenceRoundDay = Math.round(
+          timeDifferenceMS / 1000 / 60 / 60 / 24
+        );
+        if (timeDifferenceRoundMin < 60) {
+          newsTime = `${timeDifferenceRoundMin} min ago`;
+        } else if (
+          timeDifferenceRoundHour >= 1 &&
+          timeDifferenceRoundHour < 24
+        ) {
+          newsTime = `${timeDifferenceRoundHour} hour ago`;
+        } else if (timeDifferenceRoundDay >= 1) {
+          newsTime = `${timeDifferenceRoundDay} days ago`;
+        } else {
+          console.log('mistake');
+        }
       }
+      timeParse();
       return `${accom}
         <li class="generic-list__item">
           <article class="news">
