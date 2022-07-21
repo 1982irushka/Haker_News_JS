@@ -26,7 +26,7 @@ newsAllPromise
       ...newsData.reduce(
         (accumulator, { kids }) => [
           ...accumulator,
-          ...kids
+          ...(kids ?? [])
             .slice(0, 4)
             .map((id) =>
               fetch(
@@ -57,7 +57,7 @@ newsAllPromise
       } = newsOne;
 
       const commentsHtml = comments
-        .filter(({ id }) => kids.slice(0, 4).includes(id))
+        .filter(({ id }) => (kids ?? []).slice(0, 4).includes(id))
         .reduce(
           (acc, { text, time }) => ` ${acc}
         <li class="generic-list__item">
