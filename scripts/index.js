@@ -1,3 +1,18 @@
+function timeFormat(time) {
+  const currentTimeMS = new Date().getTime();
+  const currentTimesSec = currentTimeMS / 1000;
+  const timeDifferenceMS = currentTimesSec - time;
+  const timeDifferenceRoundMin = Math.round(timeDifferenceMS / 60);
+  const timeDifferenceRoundHour = Math.round(timeDifferenceMS / 60 / 60);
+  const timeDifferenceRoundDay = Math.round(timeDifferenceMS / 60 / 60 / 24);
+  if (timeDifferenceRoundMin < 60) {
+    return `${timeDifferenceRoundMin} min ago`;
+  }
+  if (timeDifferenceRoundHour >= 1 && timeDifferenceRoundHour < 24) {
+    return `${timeDifferenceRoundHour} hour ago`;
+  }
+  return `${timeDifferenceRoundDay} days ago`;
+}
 function getAgeValidity(value) {
   const isNumber = !Number.isNaN(value) && typeof value === 'number';
   return isNumber && Number(value) > 0;
@@ -49,22 +64,23 @@ newsAllPromise
       const {
         by,
         descendants,
-        /*         time: newsTime,
-         */ title: newsTitle,
+        time: newsTime,
+        title: newsTitle,
         score,
         url,
         kids,
       } = newsOne;
-      let { time: newsTime } = newsOne;
       const commentsHtml = comments
         .filter(({ id }) => (kids ?? []).slice(0, 4).includes(id))
+        .some()
+        .map(({ time, ...rest }) => ({ time: timeFormat(time), ...rest }))
         .reduce(
           (acc, { text, time }) => ` ${acc}
         <li class="generic-list__item">
            <article class="comment">
              <p class="comment__info">
                <span>${by}</span>
-               <span>${time}</span>
+               <span>${timeFormat(time)}</span>
              </p>
              <div>${text}</div>
             </article>
@@ -76,34 +92,8 @@ newsAllPromise
       const headingWithLink = `<a href="${url}">${newsTitle}</a>`;
       const source = url && hostname ? `<a href="${url}">${hostname}</a>` : '';
 
-      function timeParse() {
-        const prevTimeMS = new Date(newsTime).getTime();
-        const currentTimeMS = new Date().getTime();
-        const timeDifferenceMS = currentTimeMS - prevTimeMS; /* 
-        const timeDifferenceRoundSec = Math.round(timeDifferenceMS / 1000); */
-        const timeDifferenceRoundMin = Math.round(timeDifferenceMS / 1000 / 60);
-        const timeDifferenceRoundHour = Math.round(
-          timeDifferenceMS / 1000 / 60 / 60
-        );
-        const timeDifferenceRoundDay = Math.round(
-          timeDifferenceMS / 1000 / 60 / 60 / 24
-        );
-        if (timeDifferenceRoundMin < 60) {
-          newsTime = `${timeDifferenceRoundMin} min ago`;
-        } else if (
-          timeDifferenceRoundHour >= 1 &&
-          timeDifferenceRoundHour < 24
-        ) {
-          newsTime = `${timeDifferenceRoundHour} hour ago`;
-        } else if (timeDifferenceRoundDay >= 1) {
-          newsTime = `${timeDifferenceRoundDay} days ago`;
-        } else {
-          console.log('mistake');
-        }
-      }
-      timeParse();
       return `${accom}
-        <li class="generic-list__item">
+        <li class="generic-list__item">ss
           <article class="news">
             <header class="news__header">
               <h2  class="news__title">${
@@ -114,7 +104,9 @@ newsAllPromise
             <footer>
               <span>${descendants}</span> points by
               <span>${by}</span>
-              <span>${newsTime}</span> | <!-- timestamp to readable date -->
+              <span>${timeFormat(
+                newsTime
+              )}</span> | <!-- timestamp to readable date -->
               <button class="show-comments">${score} comments</button>
             </footer>
           </article>
