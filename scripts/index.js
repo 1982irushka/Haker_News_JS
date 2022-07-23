@@ -148,24 +148,11 @@ userForm.onsubmit = function validationForm(event) {
     }
   }
 
-  const genderRadio = userForm.elements.gender;
-  const genderRadioMaleChecked = genderRadio[0].checked;
-  const genderRadioFemaleChecked = genderRadio[1].checked;
-
-  let genderRadioValue;
   const infoUserGender = document.getElementById('userInfoGender');
-
-  if (genderRadioFemaleChecked === true) {
-    genderRadioValue = genderRadio[1].value;
+  const genderRadioValue = userForm.elements.gender.value;
+  const isValidGenderValue = ['Male', 'Female'].includes(genderRadioValue);
+  if (isValidGenderValue) {
     infoUserGender.innerHTML = `<p>Gender</p><span class="user-info__value">${genderRadioValue}</span>`;
-
-    if (errors.has('gender')) {
-      errors.delete('gender');
-    }
-  } else if (genderRadioMaleChecked === true) {
-    genderRadioValue = genderRadio[0].value;
-    infoUserGender.innerHTML = `<p>Gender</p><span class="user-info__value">${genderRadioValue}</span>`;
-
     if (errors.has('gender')) {
       errors.delete('gender');
     }
