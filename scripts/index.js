@@ -1,3 +1,18 @@
+function timeFormat(time) {
+  const currentTimeMS = new Date().getTime();
+  const currentTimesSec = currentTimeMS / 1000;
+  const timeDifferenceMS = currentTimesSec - time;
+  const timeDifferenceRoundMin = Math.round(timeDifferenceMS / 60);
+  const timeDifferenceRoundHour = Math.round(timeDifferenceMS / 60 / 60);
+  const timeDifferenceRoundDay = Math.round(timeDifferenceMS / 60 / 60 / 24);
+  if (timeDifferenceRoundMin < 60) {
+    return `${timeDifferenceRoundMin} min ago`;
+  }
+  if (timeDifferenceRoundHour >= 1 && timeDifferenceRoundHour < 24) {
+    return `${timeDifferenceRoundHour} hour ago`;
+  }
+  return `${timeDifferenceRoundDay} days ago`;
+}
 function getAgeValidity(value) {
   const isNumber = !Number.isNaN(value) && typeof value === 'number';
   return isNumber && Number(value) > 0;
@@ -55,7 +70,6 @@ newsAllPromise
         url,
         kids,
       } = newsOne;
-
       const commentsHtml = comments
         .filter(({ id }) => (kids ?? []).slice(0, 4).includes(id))
         .reduce(
@@ -64,7 +78,7 @@ newsAllPromise
            <article class="comment">
              <p class="comment__info">
                <span>${by}</span>
-               <span>${time}</span>
+               <span>${timeFormat(time)}</span>
              </p>
              <div>${text}</div>
             </article>
@@ -88,7 +102,9 @@ newsAllPromise
             <footer>
               <span>${descendants}</span> points by
               <span>${by}</span>
-              <span>${newsTime}</span> | <!-- timestamp to readable date -->
+              <span>${timeFormat(
+                newsTime
+              )}</span> | <!-- timestamp to readable date -->
               <button class="show-comments">${score} comments</button>
             </footer>
           </article>
@@ -130,24 +146,11 @@ userForm.onsubmit = function validationForm(event) {
     }
   }
 
-  const genderRadio = userForm.elements.gender;
-  const genderRadioMaleChecked = genderRadio[0].checked;
-  const genderRadioFemaleChecked = genderRadio[1].checked;
-
-  let genderRadioValue;
   const infoUserGender = document.getElementById('userInfoGender');
-
-  if (genderRadioFemaleChecked === true) {
-    genderRadioValue = genderRadio[1].value;
+  const genderRadioValue = userForm.elements.gender.value;
+  const isValidGenderValue = ['Male', 'Female'].includes(genderRadioValue);
+  if (isValidGenderValue) {
     infoUserGender.innerHTML = `<p>Gender</p><span class="user-info__value">${genderRadioValue}</span>`;
-
-    if (errors.has('gender')) {
-      errors.delete('gender');
-    }
-  } else if (genderRadioMaleChecked === true) {
-    genderRadioValue = genderRadio[0].value;
-    infoUserGender.innerHTML = `<p>Gender</p><span class="user-info__value">${genderRadioValue}</span>`;
-
     if (errors.has('gender')) {
       errors.delete('gender');
     }
