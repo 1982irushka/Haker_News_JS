@@ -72,8 +72,6 @@ newsAllPromise
       } = newsOne;
       const commentsHtml = comments
         .filter(({ id }) => (kids ?? []).slice(0, 4).includes(id))
-        .some()
-        .map(({ time, ...rest }) => ({ time: timeFormat(time), ...rest }))
         .reduce(
           (acc, { text, time }) => ` ${acc}
         <li class="generic-list__item">
