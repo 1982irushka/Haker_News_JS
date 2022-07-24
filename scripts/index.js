@@ -91,7 +91,7 @@ newsAllPromise
       const source = url && hostname ? `<a href="${url}">${hostname}</a>` : '';
 
       return `${accom}
-        <li class="generic-list__item">ss
+        <li class="generic-list__item">
           <article class="news">
             <header class="news__header">
               <h2  class="news__title">${
