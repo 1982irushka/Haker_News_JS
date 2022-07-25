@@ -1,132 +1,57 @@
-function timeFormat(time) {
-  const currentTimeMS = new Date().getTime();
-  const currentTimesSec = currentTimeMS / 1000;
-  const timeDifferenceMS = currentTimesSec - time;
-  const timeDifferenceRoundMin = Math.round(timeDifferenceMS / 60);
-  const timeDifferenceRoundHour = Math.round(timeDifferenceMS / 60 / 60);
-  const timeDifferenceRoundDay = Math.round(timeDifferenceMS / 60 / 60 / 24);
-  if (timeDifferenceRoundMin < 60) {
-    return `${timeDifferenceRoundMin} min ago`;
-  }
-  if (timeDifferenceRoundHour >= 1 && timeDifferenceRoundHour < 24) {
-    return `${timeDifferenceRoundHour} hour ago`;
-  }
-  return `${timeDifferenceRoundDay} days ago`;
-}
-function getAgeValidity(value) {
+import NewsFacade from './news-facade.js';
+import Store from './store.js';
+import APIService from './api-service.js';
+import News from './news.js';
+
+const HOST = 'https://hacker-news.firebaseio.com/v0';
+
+const getAgeValidity = (value) => {
   const isNumber = !Number.isNaN(value) && typeof value === 'number';
   return isNumber && Number(value) > 0;
-}
+};
 
-const newsAllPromise = fetch(
-  'https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty'
-);
-newsAllPromise
-  .then((responses) => responses.json())
-  .then((newsAllIds) => {
-    const newsIdsSlice = newsAllIds.slice(0, 5);
-    const newsPromisesFive = newsIdsSlice.map((id) =>
-      fetch(
-        `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
-      )
-    );
-    return Promise.all(newsPromisesFive);
+const compose = (...fns) =>
+  fns.reduce(
+    (f, g) =>
+      (...args) =>
+        g(f(...args))
+  );
+
+const api = new APIService(HOST);
+const store = new Store();
+
+api
+  .fetchOne(api.news)
+  .then((ids) => {
+    const urls = ids.slice(0, 5).map((id) => api.getItemUrl(id));
+    return api.fetchAll(urls);
   })
-  .then((responses) =>
-    Promise.all(responses.map((response) => response.json()))
-  )
-  .then((newsData) =>
-    Promise.all([
-      Promise.resolve(newsData),
-      ...newsData.reduce(
-        (accumulator, { kids }) => [
-          ...accumulator,
-          ...(kids ?? [])
-            .slice(0, 4)
-            .map((id) =>
-              fetch(
-                `https://hacker-news.firebaseio.com/v0/item/${id}.json?print=pretty`
-              )
-            ),
-        ],
-        []
-      ),
-    ])
-  )
-  .then(([newsData, ...commentsResponses]) =>
-    Promise.all([
-      Promise.resolve(newsData),
-      ...commentsResponses.map((responses) => responses.json()),
-    ])
-  )
-  .then(([newsData, ...comments]) => {
-    const newsHtml = newsData.reduce((accom, newsOne) => {
-      const {
-        by,
-        descendants,
-        time: newsTime,
-        title: newsTitle,
-        score,
-        url,
-        kids,
-      } = newsOne;
-      const commentsHtml = comments
-        .filter(({ id }) => (kids ?? []).slice(0, 4).includes(id))
-        .reduce(
-          (acc, { text, time }) => ` ${acc}
-        <li class="generic-list__item">
-           <article class="comment">
-             <p class="comment__info">
-               <span>${by}</span>
-               <span>${timeFormat(time)}</span>
-             </p>
-             <div>${text}</div>
-            </article>
-         </li>`,
-          ''
-        );
-      const newsUrl = url ? new URL(url) : {};
-      const { hostname = null } = newsUrl;
-      const headingWithLink = `<a href="${url}">${newsTitle}</a>`;
-      const source = url && hostname ? `<a href="${url}">${hostname}</a>` : '';
-
-      return `${accom}
-        <li class="generic-list__item">
-          <article class="news">
-            <header class="news__header">
-              <h2  class="news__title">${
-                hostname ? headingWithLink : newsTitle
-              }</h2>
-              ${source}
-            </header>
-            <footer>
-              <span>${descendants}</span> points by
-              <span>${by}</span>
-              <span>${timeFormat(
-                newsTime
-              )}</span> | <!-- timestamp to readable date -->
-              <button class="show-comments">${score} comments</button>
-            </footer>
-          </article>
-          <ul class="generic-list generic-list--hidden comments-list">${commentsHtml}</ul>
-             </li>`;
-    }, '');
-    const newsList = document.getElementById('news-list');
-    newsList.innerHTML = newsHtml;
-
-    const commentsButtons = document.getElementsByClassName('show-comments');
-    Array.from(commentsButtons).forEach((button) => {
-      button.addEventListener('click', () => {
-        const li = button.closest('.generic-list__item');
-        const [ul] = Array.from(li.getElementsByClassName('comments-list'));
-        ul.classList.toggle('generic-list--hidden');
-      });
-    });
+  .then((data) => {
+    store.set('news', data);
+    const urls = data.reduce(
+      (accumulator, { kids }) => [
+        ...accumulator,
+        ...(kids ?? []).slice(0, 4).map((id) => api.getItemUrl(id)),
+      ],
+      []
+    );
+    return api.fetchAll(urls);
+  })
+  .then((data) => {
+    store.set('comments', data);
+    const producer = new NewsFacade(
+      store,
+      new News('news-list', 'show-comments'),
+      compose
+    );
+    producer.setup();
+  })
+  .catch((error) => {
+    console.error(error);
   });
 
 // validation login form
 const userForm = document.forms.user;
-
 userForm.onsubmit = function validationForm(event) {
   event.preventDefault();
 
