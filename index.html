@@ -27,18 +27,25 @@
               placeholder="name"
               name="name"
             />
+            <ul class="field__requirements">
+              <li>Must not be empty</li>
+              <li>Must only contain letters (no special characters)</li>
+            </ul>
           </div>
           <div class="field">
-            <label class="field__label">Gender </label>
-            <div id="genderField" class="field field--radio">
+            <div class="field__label">Gender</div>
+            <div class="field__radio-set">
               <input
                 class="field__input field__input--radio"
                 type="radio"
                 id="genderMale"
                 name="gender"
                 value="Male"
+                checked
               />
-              <label for="genderMale">Male</label>
+              <label for="genderMale" class="field__label field__label--radio"
+                >Male</label
+              >
               <input
                 type="radio"
                 class="field__input field__input--radio"
@@ -46,8 +53,13 @@
                 name="gender"
                 value="Female"
               />
-              <label for="genderFemale">Female</label>
+              <label for="genderFemale" class="field__label field__label--radio"
+                >Female</label
+              >
             </div>
+            <ul class="field__requirements">
+              <li>Male or Female</li>
+            </ul>
           </div>
           <div class="field">
             <label for="ageField" class="field__label">Age</label>
@@ -57,6 +69,9 @@
               type="number"
               name="age"
             />
+            <ul class="field__requirements">
+              <li>Must be a number</li>
+            </ul>
           </div>
           <div class="field">
             <label for="select" class="field__label">Country </label>
@@ -67,6 +82,9 @@
               <option value="Canada">Canada</option>
               <option value="USA">USA</option>
             </select>
+            <ul class="field__requirements">
+              <li>Select a country</li>
+            </ul>
           </div>
           <button id="submitBtn" class="form__submit-btn" type="submit">
             Відправити
