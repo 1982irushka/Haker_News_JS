@@ -5,11 +5,6 @@ import News from './news.js';
 
 const HOST = 'https://hacker-news.firebaseio.com/v0';
 
-const getAgeValidity = (value) => {
-  const isNumber = !Number.isNaN(value) && typeof value === 'number';
-  return isNumber && Number(value) > 0;
-};
-
 const compose = (...fns) =>
   fns.reduce(
     (f, g) =>
@@ -49,6 +44,11 @@ api
   .catch((error) => {
     console.error(error);
   });
+
+const getAgeValidity = (value) => {
+  const isNumber = !Number.isNaN(value) && typeof value === 'number';
+  return isNumber && Number(value) > 0;
+};
 
 // validation login form
 const userForm = document.forms.user;

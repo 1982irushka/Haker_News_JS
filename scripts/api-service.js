@@ -1,11 +1,10 @@
 export default class APIService {
-  #HOST = '';
+  #HOST;
 
   constructor(host) {
     this.#HOST = host;
     this.fetchOne = this.fetchOne.bind(this);
     this.fetchAll = this.fetchAll.bind(this);
-    this.fetch = fetch;
   }
 
   get news() {
@@ -16,8 +15,9 @@ export default class APIService {
     return `${this.#HOST}/item/${id}.json?print=pretty`;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async fetchOne(url) {
-    const response = await this.fetch(url);
+    const response = await fetch(url);
     const { status, ok } = response;
     if (!ok) {
       const message = `An error has occured: ${status}`;
