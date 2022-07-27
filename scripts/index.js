@@ -2,10 +2,8 @@ import NewsFacade from './news-facade.js';
 import Store from './store.js';
 import APIService from './api-service.js';
 import News from './news.js';
-import UserValidation from './user-validation.js';
-import ValidityChecks from './validity-checks.js';
-import extractFormElements from './extract-form-elements.js';
 import compose from './compose.js';
+import UserInfoForm from './user-info-form.js';
 
 /**
  * News
@@ -47,18 +45,13 @@ api
  * User Form
  */
 const { user } = document.forms;
-extractFormElements(user).forEach((el) => {
-  el.UserValidation = new UserValidation(el);
-  el.UserValidation.validityChecks = ValidityChecks.get(el.name);
-});
+const userInfoForm = new UserInfoForm(user);
 
 user.addEventListener(
   'submit',
   (e) => {
     e.preventDefault();
-    extractFormElements(e.target).forEach((el) =>
-      el.UserValidation.checkInput()
-    );
+    userInfoForm.handleSubmit();
   },
   false
 );
