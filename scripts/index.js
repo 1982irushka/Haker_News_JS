@@ -30,6 +30,8 @@ api
   })
   .then((data) => {
     store.set('comments', data);
+    document.getElementById('loader').style.display = 'none';
+
     const producer = new NewsFacade(
       store,
       new News('news-list', 'show-comments'),
