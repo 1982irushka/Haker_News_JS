@@ -4,6 +4,7 @@ import APIService from './api-service.js';
 import News from './news.js';
 import compose from './compose.js';
 import UserInfoForm from './user-info-form.js';
+import hideLoader from './loader.js';
 
 /**
  * News
@@ -11,35 +12,33 @@ import UserInfoForm from './user-info-form.js';
 const HOST = 'https://hacker-news.firebaseio.com/v0';
 const api = new APIService(HOST);
 const store = new Store();
-api
-  .fetchOne(api.news)
-  .then((ids) => {
+(async () => {
+  try {
+    const ids = await api.fetchOne(api.news);
     const urls = ids.slice(0, 5).map((id) => api.getItemUrl(id));
-    return api.fetchAll(urls);
-  })
-  .then((data) => {
-    store.set('news', data);
-    const urls = data.reduce(
+    const news = await api.fetchAll(urls);
+    const commentsUrls = news.reduce(
       (accumulator, { kids }) => [
         ...accumulator,
         ...(kids ?? []).slice(0, 4).map((id) => api.getItemUrl(id)),
       ],
       []
     );
-    return api.fetchAll(urls);
-  })
-  .then((data) => {
-    store.set('comments', data);
+    const comments = await api.fetchAll(commentsUrls);
+    store.set('news', news);
+    store.set('comments', comments);
     const producer = new NewsFacade(
       store,
       new News('news-list', 'show-comments'),
       compose
     );
     producer.setup();
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+  } catch (e) {
+    console.error(e);
+  } finally {
+    hideLoader();
+  }
+})();
 
 /**
  * User Form
