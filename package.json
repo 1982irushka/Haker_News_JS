@@ -1,15 +1,19 @@
 {
+  "type": "module",
   "name": "haker_news_js",
   "version": "1.0.0",
-  "description": "",
+  "description": "description",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "stylelint": "stylelint '**/*.{less,css}'",
+    "stylelint": "stylelint \"**/*.css\"",
     "lint": "eslint --cache --cache-location node_modules/.cache/eslint",
-    "prettier": "prettier '**/*.{svg,js,html,css,json}' --write --cache node_modules/.cache/prettier",
+    "lint:css": "npm run stylelint",
+    "prettier": "prettier --ignore-path .gitignore --config .prettierrc \"**/*.{svg,js,html,css,json}\" --write --cache node_modules/.cache/prettier",
     "exec": "node index.js",
     "server": "http-server",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
   },
   "repository": {
     "type": "git",
@@ -22,7 +26,7 @@
   },
   "homepage": "https://github.com/1982irushka/Haker_News_JS#readme",
   "lint-staged": {
-    "*.{js,html}": [
+    "*.js": [
       "npm run lint -- --fix",
       "prettier --write",
       "git add"

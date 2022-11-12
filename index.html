@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <script defer type="module" src="scripts/index.js"></script>
+    <title>Haker_news_JS</title>
+  </head>
+  <body>
+    <main class="page">
+      <header class="page__header top-panel">
+        <h1 class="logo">Hacker News</h1>
+      </header>
+      <section class="page__news">
+        <div id="loader" class="loader">Loading
+          <span></span>
+        </div>
+        <ol id="news-list" class="generic-list generic-list--numeric"></ol>
+      </section>
+      <aside class="page__form">
+        <form class="form" name="user">
+          <h2 id="loginFormTitle" class="form__title">User Info</h2>
+          <div class="field">
+            <label for="nameField" class="field__label">User name</label>
+            <input
+              id="nameField"
+              type="text"
+              class="field__input"
+              placeholder="name"
+              name="name"
+            />
+            <ul class="field__requirements">
+              <li>Must not be empty</li>
+              <li>Must only contain letters (no special characters)</li>
+            </ul>
+          </div>
+          <div class="field">
+            <div class="field__label">Gender</div>
+            <div class="field__radio-set">
+              <input
+                class="field__input field__input--radio"
+                type="radio"
+                id="genderMale"
+                name="gender"
+                value="Male"
+                checked
+              />
+              <label for="genderMale" class="field__label field__label--radio"
+                >Male</label
+              >
+              <input
+                type="radio"
+                class="field__input field__input--radio"
+                id="genderFemale"
+                name="gender"
+                value="Female"
+              />
+              <label for="genderFemale" class="field__label field__label--radio"
+                >Female</label
+              >
+            </div>
+            <ul class="field__requirements">
+              <li>Male or Female</li>
+            </ul>
+          </div>
+          <div class="field">
+            <label for="ageField" class="field__label">Age</label>
+            <input
+              id="ageField"
+              class="field__input"
+              type="number"
+              name="age"
+            />
+            <ul class="field__requirements">
+              <li>Must be a number</li>
+            </ul>
+          </div>
+          <div class="field">
+            <label for="select" class="field__label">Country </label>
+            <select id="select" class="field__input" name="country">
+              <option value=""></option>
+              <option value="Ukraine">Ukraine</option>
+              <option value="Poland">Poland</option>
+              <option value="Canada">Canada</option>
+              <option value="USA">USA</option>
+            </select>
+            <ul class="field__requirements">
+              <li>Select a country</li>
+            </ul>
+          </div>
+          <button id="submitBtn" class="form__submit-btn" type="submit">
+            Відправити
+          </button>
+        </form>
+        <article id="userInfo" class="user-info">
+          <h2 class="user-info__title">User</h2>
+          <div id="userInfoName" class="user-info__label"></div>
+          <div id="userInfoAge" class="user-info__label"></div>
+          <div id="userInfoGender" class="user-info__label"></div>
+          <div id="userInfoCountry" class="user-info__label"></div>
+        </article>
+      </aside>
+    </main>
+  </body>
+</html>
